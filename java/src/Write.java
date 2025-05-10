@@ -1,8 +1,7 @@
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
-public class Write implements Runnable
-{
+public class Write implements Runnable {
     Holder hotel_ob;
     Write(Holder hotel_ob)
     {
@@ -15,8 +14,7 @@ public class Write implements Runnable
             ObjectOutputStream oos=new ObjectOutputStream(fout);
             oos.writeObject(hotel_ob);
         }
-        catch(Exception e)
-        {
+        catch(Exception e){
             System.out.println("Error in writing "+e);
         }
 

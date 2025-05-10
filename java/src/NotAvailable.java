@@ -1,5 +1,4 @@
-public class NotAvailable extends Exception
-{
+public class NotAvailable extends Exception {
     @Override
     public String toString()
     {
