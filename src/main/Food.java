@@ -1,9 +1,17 @@
 import java.io.Serializable;
+import java.util.Locale;
 
 public class Food implements Serializable {
+
+    private String name;
     int itemno;
     int quantity;
     float price;
+
+    public Food(String name, float price) {
+        this.name = name;
+        this.price = price;
+    }
 
     public Food(int itemno, int quantity){
         this.itemno = itemno;
@@ -19,5 +27,13 @@ public class Food implements Serializable {
             case 4: price = quantity * 30;
                 break;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPrice(){
+        return "R$" + String.format(Locale.US, "%.2f", price);
     }
 }
