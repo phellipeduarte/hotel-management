@@ -3,45 +3,35 @@ import java.util.Scanner;
 public class Hotel {
     static Holder hotelOb = new Holder();
     static Scanner scanner = new Scanner(System.in);
-    public static void CustDetails(int i, int rn){
+    public static void custDetails(int i, int rn){
         String name, contact, gender;
         String name2 = null, contact2 = null;
         String gender2 = "";
 
-        System.out.print("\nEnter customer name: ");
+        name = InputOutputHandler.waitStringAnswer("Enter customer name: ");
 
-        name = scanner.next();
+        contact = InputOutputHandler.waitStringAnswer("Enter contact number: ");
 
-        System.out.print("Enter contact number: ");
-
-        contact = scanner.next();
-
-        System.out.print("Enter gender: ");
-
-        gender = scanner.next();
+        gender = InputOutputHandler.waitStringAnswer("Enter gender: ");
 
         if(i<3) {
-            System.out.print("Enter second customer name: ");
 
-            name2 = scanner.next();
+            name2 = InputOutputHandler.waitStringAnswer("Enter second customer name: ");
 
-            System.out.print("Enter contact number: ");
+            contact2= InputOutputHandler.waitStringAnswer("Enter contact number: ");
 
-            contact2= scanner.next();
+            gender2 = InputOutputHandler.waitStringAnswer("Enter gender: ");
 
-            System.out.print("Enter gender: ");
-
-            gender2 = scanner.next();
         }
 
         switch (i) {
-            case 1: hotelOb.luxuryDoublerrom[rn] = new Doubleroom(name,contact,gender,name2,contact2,gender2);
+            case 1: hotelOb.luxuryDoublerrom[rn] = new Doubleroom(name, contact, gender, name2, contact2, gender2);
                 break;
-            case 2: hotelOb.deluxeDoublerrom[rn] = new Doubleroom(name,contact,gender,name2,contact2,gender2);
+            case 2: hotelOb.deluxeDoublerrom[rn] = new Doubleroom(name, contact, gender, name2, contact2, gender2);
                 break;
-            case 3: hotelOb.luxurySingleerrom[rn] = new Singleroom(name,contact,gender);
+            case 3: hotelOb.luxurySingleerrom[rn] = new Singleroom(name, contact, gender);
                 break;
-            case 4: hotelOb.deluxeSingleerrom[rn] = new Singleroom(name,contact,gender);
+            case 4: hotelOb.deluxeSingleerrom[rn] = new Singleroom(name, contact, gender);
                 break;
             default: System.out.println("Wrong option");
                 break;
@@ -52,7 +42,7 @@ public class Hotel {
         int j;
         int rn;
 
-        System.out.println("\nChoose room number from : ");
+        System.out.println("\nChoose room number from: ");
 
         switch (i) {
             case 1:
@@ -62,15 +52,13 @@ public class Hotel {
                     }
                 }
 
-                System.out.print("\nEnter room number: ");
-
                 try{
-                    rn = scanner.nextInt();
+                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
                     rn--;
 
                     if(hotelOb.luxuryDoublerrom[rn] != null)
                         throw new NotAvailable();
-                    CustDetails(i,rn);
+                    custDetails(i,rn);
                 }
                 catch(Exception e){
                     System.out.println("Invalid Option");
@@ -87,15 +75,14 @@ public class Hotel {
                     }
                 }
 
-                System.out.print("\nEnter room number: ");
 
                 try{
-                    rn = scanner.nextInt();
+                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
                     rn = rn - 11;
 
                     if(hotelOb.deluxeDoublerrom[rn] != null)
                         throw new NotAvailable();
-                    CustDetails(i,rn);
+                    custDetails(i,rn);
 
                 }
                 catch(Exception e){
@@ -112,15 +99,13 @@ public class Hotel {
                     }
                 }
 
-                System.out.print("\nEnter room number: ");
-
                 try{
-                    rn = scanner.nextInt();
+                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
                     rn = rn - 31;
 
                     if(hotelOb.luxurySingleerrom[rn] != null)
                         throw new NotAvailable();
-                    CustDetails(i,rn);
+                    custDetails(i,rn);
 
                 }
                 catch(Exception e){
@@ -132,20 +117,18 @@ public class Hotel {
             case 4:
                 for(j = 0; j < hotelOb.deluxeSingleerrom.length; j++){
                     if(hotelOb.deluxeSingleerrom[j] == null){
-                        System.out.print(j+41+",");
+                        System.out.print(j + 41 + ",");
                     }
                 }
 
-                System.out.print("\nEnter room number: ");
-
                 try{
-                    rn = scanner.nextInt();
+                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
                     rn = rn - 41;
 
                     if(hotelOb.deluxeSingleerrom[rn] != null)
                         throw new NotAvailable();
 
-                    CustDetails(i, rn);
+                    custDetails(i, rn);
                 }
                 catch(Exception e){
                     System.out.println("Invalid Option");
