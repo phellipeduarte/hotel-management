@@ -38,7 +38,7 @@ public class Main {
                          Hotel.bookroom(ch2);
                     break;
                 case 4:
-                     System.out.print("Room Number -");
+                     System.out.print("Room Number - ");
                          ch2 = sc.nextInt();
                          if(ch2>60)
                              System.out.println("Room doesn't exist");

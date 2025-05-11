@@ -17,7 +17,7 @@ public final class Kitchen {
     }
 
     public String getMenuOptions(){
-        String options = "";
+        String options = "\nMenu: \n";
         Integer index = 1;
 
         for(Food food : this.getMenu()){
@@ -34,5 +34,9 @@ public final class Kitchen {
         menu.add(new Food("Pasta", 60));
         menu.add(new Food("Noodles", 70));
         menu.add(new Food("Coke", 30));
+    }
+
+    public void order(Integer menuIndex, Room room){
+        room.addOrder(menu.get(menuIndex - 1));
     }
 }

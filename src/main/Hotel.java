@@ -236,7 +236,7 @@ public class Hotel {
                 System.out.println("===============");
                 System.out.println("Item   Quantity    Price");
                 System.out.println("-------------------------");
-                for(Food obb: hotelOb.luxuryDoublerrom[rn].food){
+                for(Food obb: hotelOb.luxuryDoublerrom[rn].orders){
                     amount += obb.price;
                     String format = "%-10s%-10s%-10s%n";
                     System.out.printf(format, list[obb.itemno - 1], obb.quantity, obb.price);
@@ -250,7 +250,7 @@ public class Hotel {
                 System.out.println("===============");
                 System.out.println("Item   Quantity    Price");
                 System.out.println("-------------------------");
-                for(Food obb: hotelOb.deluxeDoublerrom[rn].food){
+                for(Food obb: hotelOb.deluxeDoublerrom[rn].orders){
                     amount += obb.price;
                     String format = "%-10s%-10s%-10s%n";
                     System.out.printf(format, list[obb.itemno - 1], obb.quantity, obb.price);
@@ -264,7 +264,7 @@ public class Hotel {
                 System.out.println("===============");
                 System.out.println("Item   Quantity    Price");
                 System.out.println("-------------------------");
-                for(Food obb: hotelOb.luxurySingleerrom[rn].food){
+                for(Food obb: hotelOb.luxurySingleerrom[rn].orders){
                     amount += obb.price;
                     String format = "%-10s%-10s%-10s%n";
                     System.out.printf(format, list[obb.itemno - 1], obb.quantity, obb.price);
@@ -278,7 +278,7 @@ public class Hotel {
                 System.out.println("===============");
                 System.out.println("Item   Quantity    Price");
                 System.out.println("-------------------------");
-                for(Food obb: hotelOb.deluxeSingleerrom[rn].food){
+                for(Food obb: hotelOb.deluxeSingleerrom[rn].orders){
                     amount += obb.price;
                     String format = "%-10s%-10s%-10s%n";
                     System.out.printf(format, list[obb.itemno - 1], obb.quantity, obb.price);
@@ -378,26 +378,26 @@ public class Hotel {
         }
     }
 
-    public static void order(int rn, int rtype)
+    public static void order(int room, int roomType)
     {
         int i, q;
         char wish;
 
         try{
-            System.out.println("\n==========\n   Menu:  \n==========\n\n1.Sandwich\tRs.50\n2.Pasta\t\tRs.60\n3.Noodles\tRs.70\n4.Coke\t\tRs.30\n");
+            System.out.println(Kitchen.getInstance().getMenuOptions());
             do {
                 i = scanner.nextInt();
-                System.out.print("Quantity- ");
+                System.out.print("Quantity - ");
                 q = scanner.nextInt();
 
-                switch(rtype){
-                    case 1: hotelOb.luxuryDoublerrom[rn].food.add(new Food(i, q));
+                switch(roomType){
+                    case 1: hotelOb.luxuryDoublerrom[room].orders.add(new Food(i, q));
                         break;
-                    case 2: hotelOb.deluxeDoublerrom[rn].food.add(new Food(i, q));
+                    case 2: hotelOb.deluxeDoublerrom[room].orders.add(new Food(i, q));
                         break;
-                    case 3: hotelOb.luxurySingleerrom[rn].food.add(new Food(i, q));
+                    case 3: hotelOb.luxurySingleerrom[room].orders.add(new Food(i, q));
                         break;
-                    case 4: hotelOb.deluxeSingleerrom[rn].food.add(new Food(i,q));
+                    case 4: hotelOb.deluxeSingleerrom[room].orders.add(new Food(i,q));
                         break;
                 }
 
