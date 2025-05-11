@@ -7,12 +7,12 @@ public class Main {
     public static void main(String[] args){
         
         try {
-            File f = new File("backup");
+            File file = new File("backup");
 
-            if(f.exists()) {
-                FileInputStream fin=new FileInputStream(f);
-                ObjectInputStream ois=new ObjectInputStream(fin);
-                Hotel.hotel_ob=(Holder)ois.readObject();
+            if(file.exists()) {
+                FileInputStream fin = new FileInputStream(file);
+                ObjectInputStream ois = new ObjectInputStream(fin);
+                Hotel.hotelOb = (Holder)ois.readObject();
             }
 
             Scanner sc = new Scanner(System.in);
@@ -85,7 +85,7 @@ public class Main {
 
         } while(wish=='y'||wish=='Y');
 
-            Thread t=new Thread(new Write(Hotel.hotel_ob));
+            Thread t=new Thread(new Write(Hotel.hotelOb));
             t.start();
 
         }
