@@ -5,8 +5,10 @@ public class Doubleroom extends Room implements Serializable {
     private ArrayList<Guest> guests;
 
     public Doubleroom(String name1, String name2, String contact1, String contact2, String gender1, String gender2) {
-        var guest1 = new Guest(name1, contact1, gender1);
-        var guest2 = new Guest(name2,contact2, gender2);
+        this.setBedCapacity(2);
+
+        Guest guest1 = new Guest(name1, contact1, gender1);
+        Guest guest2 = new Guest(name2,contact2, gender2);
 
         this.guests = new ArrayList<>();
 
