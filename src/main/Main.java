@@ -34,7 +34,8 @@ public class Main {
 
                 case 2:
                     answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                    Hotel.availability(answer2);
+                    String availability = Hotel.availability(answer2);
+                    System.out.println(availability);
                     break;
 
                 case 3:

@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Hotel {
@@ -145,45 +147,36 @@ public class Hotel {
         System.out.println("Room Booked");
     }
 
-    public static void availability(int i)
+    public static String availability(int option)
     {
-        int j, count = 0;
+        String output;
 
-        switch (i) {
-            case 1:
-                for(j = 0; j < 10; j++){
-                    if(hotelOb.luxuryDoublerrom[j] == null)
-                        count++;
-                }
-                break;
+        List<Room[]> roomArrayOptions = Arrays.asList(
+            hotelOb.luxuryDoublerrom,
+            hotelOb.deluxeDoublerrom,
+            hotelOb.luxurySingleerrom,
+            hotelOb.deluxeSingleerrom
+        );
 
-            case 2:
-                for(j = 0; j < hotelOb.deluxeDoublerrom.length; j++){
-                    if(hotelOb.deluxeDoublerrom[j] == null)
-                        count++;
-                }
-                break;
-
-            case 3:
-                for(j = 0; j < hotelOb.luxurySingleerrom.length; j++){
-                    if(hotelOb.luxurySingleerrom[j] == null)
-                        count++;
-                }
-                break;
-
-            case 4:
-                for(j = 0; j < hotelOb.deluxeSingleerrom.length; j++){
-                    if(hotelOb.deluxeSingleerrom[j] == null)
-                        count++;
-                }
-                break;
-
-            default:
-                System.out.println("Enter valid option");
-                break;
+        try{
+            output = "Number of rooms available: " + countAvailableRooms(roomArrayOptions.get(option - 1));
+        } catch (IndexOutOfBoundsException exception){
+            output = "Enter a valid option";
         }
 
-        System.out.println("Number of rooms available : "+count);
+        return output;
+    }
+
+    public static Integer countAvailableRooms(Room[] roomArray){
+        Integer count = 0;
+
+        for (Room room : roomArray) {
+            if (room == null) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     public static void bill(int rn, int rtype)
