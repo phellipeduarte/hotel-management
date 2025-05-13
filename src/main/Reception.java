@@ -11,6 +11,8 @@ public final class Reception {
     }
 
     public String features(int option){
+        String features;
+
         ArrayList<Room> roomOptions = new ArrayList<>(Arrays.asList(
                 new Doubleroom(true, 4000.0),
                 new Doubleroom(false, 3000.0),
@@ -18,6 +20,12 @@ public final class Reception {
                 new Singleroom(false, 1200.0)
         ));
 
-        return roomOptions.get(option - 1).getRoomDetails();
+        try{
+            features = roomOptions.get(option - 1).getRoomDetails();
+        } catch (IndexOutOfBoundsException exception){
+            features = "Enter a valid option";
+        }
+
+        return features;
     }
 }
