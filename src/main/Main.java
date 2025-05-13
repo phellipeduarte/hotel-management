@@ -28,7 +28,7 @@ public class Main {
             switch(answer){
                 case 1:
                     answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                    String features = Reception.getInstance().features(answer2);
+                    String features = Reception.getInstance().roomFeatures(answer2);
                     System.out.println(features);
                     break;
 

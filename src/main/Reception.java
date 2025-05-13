@@ -10,7 +10,7 @@ public final class Reception {
         return instance;
     }
 
-    public String features(int option){
+    public String roomFeatures(int option){
         String features;
 
         ArrayList<Room> roomOptions = new ArrayList<>(Arrays.asList(
