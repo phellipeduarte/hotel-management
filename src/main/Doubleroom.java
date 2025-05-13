@@ -16,6 +16,12 @@ public class Doubleroom extends Room implements Serializable {
         this.guests.add(guest2);
     }
 
+    public Doubleroom(Boolean ac, Double charge){
+        this.setBedCapacity(2);
+        this.setAc(ac);
+        this.setCharge(charge);
+    }
+
     public String getGuestsNames(){
         return getGuest(0).getName() + " - " + getGuest(1).getName();
     }

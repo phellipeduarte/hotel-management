@@ -28,7 +28,7 @@ public class Main {
             switch(answer){
                 case 1:
                     answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                    Hotel.features(answer2);
+                    Reception.getInstance().features(answer2);
                     break;
 
                 case 2:
