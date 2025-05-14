@@ -34,18 +34,18 @@ public class Hotel {
             guest2 = new Guest(name2, contact2, gender2);
 
             if(option == 1){
-                hotelOb.luxuryDoubleroom[room] = new Doubleroom(guest1, guest2);
+                hotelOb.luxuryDoubleroom[room] = new Room(guest1, guest2);
             } else {
-                hotelOb.deluxeDoubleroom[room] = new Doubleroom(guest1, guest2);
+                hotelOb.deluxeDoubleroom[room] = new Room(guest1, guest2);
             }
 
             return;
         } else {
 
             if(option == 3) {
-                hotelOb.luxurySingleeroom[room] = new Singleroom(guest1);
+                hotelOb.luxurySingleeroom[room] = new Room(guest1);
             } else {
-                hotelOb.deluxeSingleeroom[room] = new Singleroom(guest1);
+                hotelOb.deluxeSingleeroom[room] = new Room(guest1);
             }
         }
     }
@@ -238,7 +238,7 @@ public class Hotel {
 
             case 3:
                 if(hotelOb.luxurySingleeroom[rn] != null)
-                    System.out.println("Room used by "+ hotelOb.luxurySingleeroom[rn].getGuestName());
+                    System.out.println("Room used by "+ hotelOb.luxurySingleeroom[rn].getGuestsNames());
                 else{
                     System.out.println("Empty Already");
                     return;
@@ -257,7 +257,7 @@ public class Hotel {
 
             case 4:
                 if(hotelOb.deluxeSingleeroom[rn] != null)
-                    System.out.println("Room used by " + hotelOb.deluxeSingleeroom[rn].getGuestName());
+                    System.out.println("Room used by " + hotelOb.deluxeSingleeroom[rn].getGuestsNames());
                 else{
                     System.out.println("Empty Already");
                     return;

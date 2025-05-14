@@ -1,8 +1,8 @@
 import java.io.Serializable;
 
 public class Holder implements Serializable {
-    Doubleroom luxuryDoubleroom[] = new Doubleroom[10];
-    Doubleroom deluxeDoubleroom[] = new Doubleroom[20];
-    Singleroom luxurySingleeroom[] = new Singleroom[10];
-    Singleroom deluxeSingleeroom[] = new Singleroom[20];
+    Room luxuryDoubleroom[] = new Room[10];
+    Room deluxeDoubleroom[] = new Room[20];
+    Room luxurySingleeroom[] = new Room[10];
+    Room deluxeSingleeroom[] = new Room[20];
 }

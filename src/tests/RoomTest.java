@@ -1,28 +1,48 @@
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RoomTest {
 
     @Test
-    void shouldReturnSingleRoomDetails(){
+    void shouldReturnGuestName(){
         Guest guest = new Guest("Phellipe", "3223", "M");
-        Singleroom singleroom = new Singleroom(guest);
-        singleroom.setAc(true);
-        singleroom.setCharge(4000.0);
+        Room room = new Room(guest);
+        assertEquals(room.getGuestsNames(), "Phellipe");
+    }
 
-        assertEquals("Bed capacity: 1\nAC: Yes\nFree breakfast: Yes\nCharge per day: R$4000.00\n", singleroom.getRoomDetails());
+
+    @Test
+    void shouldReturnGuestsNames(){
+        Guest guest1 = new Guest("Phellipe", "3223", "M");
+        Guest guest2 = new Guest("Larissa", "2332", "F");
+        Room room = new Room(guest1, guest2);
+        assertEquals(room.getGuestsNames(), "Phellipe, Larissa.");
+    }
+
+
+    @Test
+    void shouldReturnOneGuestRoomDetails(){
+        Guest guest = new Guest("Phellipe", "3223", "M");
+        Room room = new Room(guest);
+        room.setLuxury(true);
+        room.setCharge(4000.0);
+
+        assertEquals("Room capacity: 1\nAC: Yes\nFree breakfast: Yes\nCharge per day: R$4000.00\n", room.getRoomDetails());
     }
 
     @Test
-    void shouldReturnDoubleRoomDetails(){
+    void shouldReturnTwoGuestsRoomDetails(){
         Guest guest1 = new Guest("Phellipe", "3223", "M");
         Guest guest2 = new Guest("Larissa", "2332", "F");
-        Room doubleroom = new Doubleroom(guest1, guest2);
-        doubleroom.setAc(false);
-        doubleroom.setCharge(6000.0);
 
-        assertEquals("Bed capacity: 2\nAC: No\nFree breakfast: Yes\nCharge per day: R$6000.00\n", doubleroom.getRoomDetails());
+        Room room = new Room(guest1, guest2);
+        room.setLuxury(false);
+        room.setCharge(6000.0);
+
+        assertEquals("Room capacity: 2\nAC: No\nFree breakfast: Yes\nCharge per day: R$6000.00\n", room.getRoomDetails());
     }
 }

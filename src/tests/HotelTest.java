@@ -19,14 +19,14 @@ public class HotelTest {
     @Test
     void shouldCountAvailableRoomsExceptAssignedRoom(){
         Room[] roomArray = new Room[10];
-        Singleroom singleroom = new Singleroom(false, 3000.0);
-        roomArray[5] = singleroom;
+        Room room = new Room(1, false, 3000.0);
+        roomArray[5] = room;
         assertEquals(9, Hotel.countAvailableRooms(roomArray));
     }
 
     @Test
     void shouldReturnRoomByNumber(){
-        Doubleroom expectedRoom = new Doubleroom(false, 3000.0);
+        Room expectedRoom = new Room(2, false, 3000.0);
         Hotel.hotelOb.deluxeDoubleroom[19] = expectedRoom;
         Room room = Hotel.getRoom(30);
 

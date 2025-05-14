@@ -6,7 +6,7 @@ public class ReceptionTest {
 
     @Test
     void shouldReturnRoomOption(){
-        final String expectedOption = "Bed capacity: 2\nAC: Yes\nFree breakfast: Yes\nCharge per day: R$4000.00\n";
+        final String expectedOption = "Room capacity: 2\nAC: Yes\nFree breakfast: Yes\nCharge per day: R$4000.00\n";
         assertEquals(expectedOption, Reception.getInstance().roomFeatures(1));
     }
 

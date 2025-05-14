@@ -2,34 +2,44 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class Room {
-    private Integer bedCapacity;
-    private Boolean ac;
+    private Integer capacity;
+    private Boolean luxury;
     private Double charge;
 
     private ArrayList<Order> orders = new ArrayList<>();
 
-    public void addOrder(Food food, int quantity){
-        orders.add(new Order(food, quantity));
+    private ArrayList<Guest> guests;
+
+    public Room(Integer capacity, Boolean luxury, Double charge) {
+        this.capacity = capacity;
+        this.luxury = luxury;
+        this.charge = charge;
     }
 
-    public Order getOrder(Integer orderIndex){
-        return orders.get(orderIndex);
+    public Room(Guest guest) {
+        capacity = 1;
+        guests = new ArrayList<>();
+        guests.add(guest);
     }
 
-    public Integer getBedCapacity() {
-        return bedCapacity;
+    public Room(Guest guest1, Guest guest2) {
+        capacity = 2;
+        guests = new ArrayList<>();
+        guests.add(guest1);
+        guests.add(guest2);
     }
 
-    public void setBedCapacity(Integer bedCapacity) {
-        this.bedCapacity = bedCapacity;
+
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    public Boolean getAc() {
-        return ac;
+    public Boolean getLuxury() {
+        return luxury;
     }
 
-    public void setAc(Boolean ac) {
-        this.ac = ac;
+    public void setLuxury(Boolean luxury) {
+        this.luxury = luxury;
     }
 
     public Double getCharge() {
@@ -40,9 +50,29 @@ public class Room {
         this.charge = charge;
     }
 
+    public void addOrder(Food food, int quantity){
+        orders.add(new Order(food, quantity));
+    }
+
+    public Order getOrder(Integer orderIndex){
+        return orders.get(orderIndex);
+    }
+
+    public String getGuestsNames(){
+        StringBuilder output = new StringBuilder();
+
+        if(guests.size() == 1){
+            output = new StringBuilder(guests.get(0).getName());
+        } else {
+            for(Guest guest : guests) output.append(guest.getName()).append(guest.equals(guests.get(guests.size() - 1)) ? "." : ", ");
+        }
+
+        return output.toString();
+    }
+
     public String getRoomDetails(){
-        String bed = "Bed capacity: " + getBedCapacity() + "\n";
-        String ac = "AC: " + (getAc() ? "Yes" : "No") + "\n";
+        String bed = "Room capacity: " + getCapacity() + "\n";
+        String ac = "AC: " + (getLuxury() ? "Yes" : "No") + "\n";
         String freeBreakfast = "Free breakfast: Yes\n";
         String chargeDay = "Charge per day: R$" + String.format(Locale.US, "%.2f", getCharge()) + "\n";
         return bed + ac + freeBreakfast + chargeDay;

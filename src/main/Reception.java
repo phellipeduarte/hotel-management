@@ -14,10 +14,10 @@ public final class Reception {
         String features;
 
         ArrayList<Room> roomOptions = new ArrayList<>(Arrays.asList(
-                new Doubleroom(true, 4000.0),
-                new Doubleroom(false, 3000.0),
-                new Singleroom(true, 2200.0),
-                new Singleroom(false, 1200.0)
+                new Room(2, true, 4000.0),
+                new Room(2, false, 3000.0),
+                new Room(1, true, 2200.0),
+                new Room(1, false, 1200.0)
         ));
 
         try{
