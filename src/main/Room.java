@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -15,10 +14,6 @@ public class Room {
 
     public Order getOrder(Integer orderIndex){
         return orders.get(orderIndex);
-    }
-
-    public ArrayList<Order> getOrders(){
-        return orders;
     }
 
     public Integer getBedCapacity() {

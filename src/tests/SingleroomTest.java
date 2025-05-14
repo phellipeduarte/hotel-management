@@ -10,7 +10,8 @@ public class SingleroomTest {
 
     @BeforeEach
     void setUp(){
-        singleroom = new Singleroom("Phellipe", "3223", "M");
+        Guest guest = new Guest("Phellipe", "3223", "M");
+        singleroom = new Singleroom(guest);
     }
 
     @Test

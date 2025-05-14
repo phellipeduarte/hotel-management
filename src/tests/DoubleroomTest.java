@@ -10,7 +10,9 @@ public class DoubleroomTest {
 
     @BeforeEach
     void setUp(){
-        doubleroom = new Doubleroom("Phellipe", "Larissa", "3223", "3322", "M", "F");
+        Guest guest1 = new Guest("Phellipe", "3223", "M");
+        Guest guest2 = new Guest("Larissa", "2332", "F");
+        doubleroom = new Doubleroom(guest1, guest2);
     }
 
     @Test

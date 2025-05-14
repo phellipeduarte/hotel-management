@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class Hotel {
     static Holder hotelOb = new Holder();
     static Scanner scanner = new Scanner(System.in);
-    public static void custDetails(int i, int rn){
+    public static void custDetails(int option, int room){
+        Guest guest1, guest2;
         String name, contact, gender;
         String name2 = null, contact2 = null;
         String gender2 = "";
@@ -16,7 +17,13 @@ public class Hotel {
 
         gender = InputOutputHandler.waitStringAnswer("Enter gender: ");
 
-        if(i<3) {
+        guest1 = new Guest(name, contact, gender);
+
+        if(option > 4 || option < 1){
+            throw new IllegalArgumentException("Enter a valid option.");
+        }
+
+        if(option < 3) {
 
             name2 = InputOutputHandler.waitStringAnswer("Enter second customer name: ");
 
@@ -24,19 +31,22 @@ public class Hotel {
 
             gender2 = InputOutputHandler.waitStringAnswer("Enter gender: ");
 
-        }
+            guest2 = new Guest(name2, contact2, gender2);
 
-        switch (i) {
-            case 1: hotelOb.luxuryDoubleroom[rn] = new Doubleroom(name, contact, gender, name2, contact2, gender2);
-                break;
-            case 2: hotelOb.deluxeDoubleroom[rn] = new Doubleroom(name, contact, gender, name2, contact2, gender2);
-                break;
-            case 3: hotelOb.luxurySingleeroom[rn] = new Singleroom(name, contact, gender);
-                break;
-            case 4: hotelOb.deluxeSingleeroom[rn] = new Singleroom(name, contact, gender);
-                break;
-            default: System.out.println("Wrong option");
-                break;
+            if(option == 1){
+                hotelOb.luxuryDoubleroom[room] = new Doubleroom(guest1, guest2);
+            } else {
+                hotelOb.deluxeDoubleroom[room] = new Doubleroom(guest1, guest2);
+            }
+
+            return;
+        } else {
+
+            if(option == 3) {
+                hotelOb.luxurySingleeroom[room] = new Singleroom(guest1);
+            } else {
+                hotelOb.deluxeSingleeroom[room] = new Singleroom(guest1);
+            }
         }
     }
 

@@ -7,7 +7,8 @@ public class RoomTest {
 
     @Test
     void shouldReturnSingleRoomDetails(){
-        Singleroom singleroom = new Singleroom("Phellipe", "3223", "M");
+        Guest guest = new Guest("Phellipe", "3223", "M");
+        Singleroom singleroom = new Singleroom(guest);
         singleroom.setAc(true);
         singleroom.setCharge(4000.0);
 
@@ -16,7 +17,9 @@ public class RoomTest {
 
     @Test
     void shouldReturnDoubleRoomDetails(){
-        Room doubleroom = new Doubleroom("Phellipe", "3223", "M", "Larissa", "2332", "F");
+        Guest guest1 = new Guest("Phellipe", "3223", "M");
+        Guest guest2 = new Guest("Larissa", "2332", "F");
+        Room doubleroom = new Doubleroom(guest1, guest2);
         doubleroom.setAc(false);
         doubleroom.setCharge(6000.0);
 

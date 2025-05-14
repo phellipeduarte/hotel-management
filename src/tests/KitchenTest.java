@@ -12,7 +12,8 @@ public class KitchenTest {
 
     @Test
     void shouldAddOrderToRoom(){
-        Room room = new Singleroom("Phellipe", "3223", "M");
+        Guest guest = new Guest("Phellipe", "3223", "M");
+        Room room = new Singleroom(guest);
         Kitchen.getInstance().order(1, 1, room);
         assertEquals("Sandwich", room.getOrder(0).getFood().getName());
     }
