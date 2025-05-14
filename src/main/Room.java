@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -6,14 +7,18 @@ public class Room {
     private Boolean ac;
     private Double charge;
 
-    ArrayList<Food> orders = new ArrayList<>();
+    private ArrayList<Order> orders = new ArrayList<>();
 
-    public void addOrder(Food food){
-        orders.add(food);
+    public void addOrder(Food food, int quantity){
+        orders.add(new Order(food, quantity));
     }
 
-    public Food getOrder(Integer orderIndex){
+    public Order getOrder(Integer orderIndex){
         return orders.get(orderIndex);
+    }
+
+    public ArrayList<Order> getOrders(){
+        return orders;
     }
 
     public Integer getBedCapacity() {
