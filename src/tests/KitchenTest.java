@@ -13,7 +13,7 @@ public class KitchenTest {
     @Test
     void shouldAddOrderToRoom(){
         Room room = new Singleroom("Phellipe", "3223", "M");
-        Kitchen.getInstance().order(1, room);
+        Kitchen.getInstance().order(1, 1, room);
         assertEquals("Sandwich", room.getOrder(0).getName());
     }
 }

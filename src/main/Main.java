@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
@@ -45,20 +44,16 @@ public class Main {
 
                 case 4:
                     answer2 = InputOutputHandler.waitIntegerAnswer(ROOM_NUMBER);
-                
-                     if(answer2>60)
-                         System.out.println("Room doesn't exist");
-                     else if(answer2>40)
-                         Hotel.order(answer2-41,4);
-                     else if(answer2>30)
-                         Hotel.order(answer2-31,3);
-                     else if(answer2>10)
-                         Hotel.order(answer2-11,2);
-                     else if(answer2>0)
-                         Hotel.order(answer2-1,1);
-                     else
-                         System.out.println("Room doesn't exist");
-                     break;
+                    try {
+                        Integer answer3 = InputOutputHandler.waitIntegerAnswer(Kitchen.getInstance().getMenuOptions());
+                        Integer quantity = InputOutputHandler.waitIntegerAnswer("Quantity: ");
+                        Kitchen.getInstance().order(answer3, quantity, Hotel.getRoom(answer2));
+                        break;
+                    } catch (IllegalArgumentException exception){
+                        System.out.println(exception.getMessage());
+                    }
+
+
                 case 5:
                      answer2 = InputOutputHandler.waitIntegerAnswer(ROOM_NUMBER);
                      

@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class HotelTest {
 
@@ -21,5 +22,35 @@ public class HotelTest {
         Singleroom singleroom = new Singleroom(false, 3000.0);
         roomArray[5] = singleroom;
         assertEquals(9, Hotel.countAvailableRooms(roomArray));
+    }
+
+    @Test
+    void shouldReturnRoomByNumber(){
+        Doubleroom expectedRoom = new Doubleroom(false, 3000.0);
+        Hotel.hotelOb.deluxeDoubleroom[19] = expectedRoom;
+        Room room = Hotel.getRoom(30);
+
+        assertEquals(expectedRoom.getRoomDetails(), room.getRoomDetails());
+        Hotel.hotelOb.deluxeDoubleroom[19] = null;
+    }
+
+    @Test
+    void shouldReturnInvalidRoomNumberSuperiorLimit(){
+        try {
+            Hotel.getRoom(61);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("Enter a valid option", exception.getMessage());
+        }
+    }
+
+    @Test
+    void shouldReturnInvalidRoomNumberInferiorLimit(){
+        try {
+            Hotel.getRoom(0);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("Enter a valid option", exception.getMessage());
+        }
     }
 }

@@ -13,6 +13,12 @@ public class Food implements Serializable {
         this.price = price;
     }
 
+    public Food(String name, float price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public Food(int itemno, int quantity){
         this.itemno = itemno;
         this.quantity = quantity;

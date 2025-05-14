@@ -36,7 +36,8 @@ public final class Kitchen {
         menu.add(new Food("Coke", 30));
     }
 
-    public void order(Integer menuIndex, Room room){
-        room.addOrder(menu.get(menuIndex - 1));
+    public void order(Integer menuIndex, Integer quantity, Room room){
+        Food choosenFood = menu.get(menuIndex - 1);
+        room.addOrder(new Food(choosenFood.getName(), choosenFood.price, quantity));
     }
 }
