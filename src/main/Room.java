@@ -46,6 +46,14 @@ public class Room {
         return charge;
     }
 
+    public static String getValueLocalCurrency(Double value){
+        return "R$" + String.format(Locale.US, "%.2f", value);
+    }
+
+    public Double getOrdersTotalValue(){
+        return orders.stream().mapToDouble(Order::getTotal).sum();
+    }
+
     public void setCharge(Double charge) {
         this.charge = charge;
     }
@@ -56,6 +64,10 @@ public class Room {
 
     public Order getOrder(Integer orderIndex){
         return orders.get(orderIndex);
+    }
+
+    public ArrayList<Order> getOrders(){
+        return orders;
     }
 
     public String getGuestsNames(){
@@ -74,7 +86,7 @@ public class Room {
         String bed = "Room capacity: " + getCapacity() + "\n";
         String ac = "AC: " + (getLuxury() ? "Yes" : "No") + "\n";
         String freeBreakfast = "Free breakfast: Yes\n";
-        String chargeDay = "Charge per day: R$" + String.format(Locale.US, "%.2f", getCharge()) + "\n";
+        String chargeDay = "Charge per day: " + getValueLocalCurrency(getCharge()) + "\n";
         return bed + ac + freeBreakfast + chargeDay;
     }
 }

@@ -5,9 +5,9 @@ public class Food implements Serializable {
 
     private String name;
 
-    private float price;
+    private Double price;
 
-    public Food(String name, float price) {
+    public Food(String name, Double price) {
         this.name = name;
         this.price = price;
     }
@@ -16,7 +16,11 @@ public class Food implements Serializable {
         return name;
     }
 
-    public String getPrice(){
-        return "R$" + String.format(Locale.US, "%.2f", price);
+    public Double getPrice(){
+        return price;
+    }
+
+    public static String getValueLocalCurrency(Double value){
+        return "R$" + String.format(Locale.US, "%.2f", value);
     }
 }

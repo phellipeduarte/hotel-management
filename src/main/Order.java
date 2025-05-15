@@ -11,4 +11,12 @@ public class Order {
     public Food getFood() {
         return food;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Double getTotal(){
+        return food.getPrice() * quantity;
+    }
 }

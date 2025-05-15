@@ -189,10 +189,6 @@ public class Hotel {
         return count;
     }
 
-    public static void bill(int rn, int rtype)
-    {
-    }
-
     public static void deallocate(int rn, int rtype){
         int j;
         char w;
@@ -210,7 +206,6 @@ public class Hotel {
                 w= scanner.next().charAt(0);
 
                 if(w == 'y' || w == 'Y'){
-                    bill(rn, rtype);
                     hotelOb.luxuryDoubleroom[rn] = null;
                     System.out.println("Deallocated succesfully");
                 }
@@ -229,7 +224,6 @@ public class Hotel {
                 w = scanner.next().charAt(0);
 
                 if(w == 'y' || w == 'Y'){
-                    bill(rn, rtype);
                     hotelOb.deluxeDoubleroom[rn] = null;
                     System.out.println("Deallocated succesfully");
                 }
@@ -248,7 +242,6 @@ public class Hotel {
                 w = scanner.next().charAt(0);
 
                 if(w == 'y' || w=='Y'){
-                    bill(rn, rtype);
                     hotelOb.luxurySingleeroom[rn] = null;
                     System.out.println("Deallocated succesfully");
                 }
@@ -267,7 +260,6 @@ public class Hotel {
                 w = scanner.next().charAt(0);
 
                 if(w == 'y' || w == 'Y'){
-                    bill(rn, rtype);
                     hotelOb.deluxeSingleeroom[rn] = null;
                     System.out.println("Deallocated succesfully");
                 }

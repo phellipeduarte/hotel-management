@@ -28,4 +28,22 @@ public final class Reception {
 
         return features;
     }
+
+    public String bill(Room room) {
+        StringBuilder bill = new StringBuilder("\nBill:\n");
+        String roomCharge = "Room charge: " + Room.getValueLocalCurrency(room.getCharge()) + "\n";
+        String foodCharge = "Order charge: " + Room.getValueLocalCurrency(room.getOrdersTotalValue()) + "\n====================\nQuantity x Item  ....  Price\n";
+
+        bill.append(roomCharge);
+        bill.append(foodCharge);
+
+        ArrayList<Order> orders = room.getOrders();
+
+        for(Order order : orders){
+            String item = order.getQuantity() + "x " + order.getFood().getName() + ".......... " + Food.getValueLocalCurrency(order.getTotal());
+            bill.append(item);
+        }
+
+        return bill.toString();
+    }
 }

@@ -21,7 +21,7 @@ public final class Kitchen {
         Integer index = 1;
 
         for(Food food : this.getMenu()){
-            options += index + ". " + food.getName() + " - " + food.getPrice() + "\n";
+            options += index + ". " + food.getName() + " - " + Food.getValueLocalCurrency(food.getPrice()) + "\n";
             index += 1;
         }
 
@@ -30,10 +30,10 @@ public final class Kitchen {
 
     private void setMenu() {
         menu = new ArrayList<>();
-        menu.add(new Food("Sandwich", 50));
-        menu.add(new Food("Pasta", 60));
-        menu.add(new Food("Noodles", 70));
-        menu.add(new Food("Coke", 30));
+        menu.add(new Food("Sandwich", 50.0));
+        menu.add(new Food("Pasta", 60.0));
+        menu.add(new Food("Noodles", 70.0));
+        menu.add(new Food("Coke", 30.0));
     }
 
     public void order(Integer menuIndex, Integer quantity, Room room){
