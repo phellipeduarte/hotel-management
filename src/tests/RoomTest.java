@@ -54,9 +54,4 @@ public class RoomTest {
 
         assertEquals(130.0, room.getOrdersTotalValue());
     }
-
-    @Test
-    void shouldReturnValueWithCurrency(){
-        assertEquals("R$10.00", Room.getValueLocalCurrency(10.0));
-    }
 }

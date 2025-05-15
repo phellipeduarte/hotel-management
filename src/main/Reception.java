@@ -31,8 +31,8 @@ public final class Reception {
 
     public String bill(Room room) {
         StringBuilder bill = new StringBuilder("\nBill:\n");
-        String roomCharge = "Room charge: " + Room.getValueLocalCurrency(room.getCharge()) + "\n";
-        String foodCharge = "Order charge: " + Room.getValueLocalCurrency(room.getOrdersTotalValue()) + "\n====================\nQuantity x Item  ....  Price\n";
+        String roomCharge = "Room charge: " + Utils.getValueLocalCurrency(room.getCharge()) + "\n";
+        String foodCharge = "Order charge: " + Utils.getValueLocalCurrency(room.getOrdersTotalValue()) + "\n====================\nQuantity x Item  ....  Price\n";
 
         bill.append(roomCharge);
         bill.append(foodCharge);
@@ -40,7 +40,7 @@ public final class Reception {
         ArrayList<Order> orders = room.getOrders();
 
         for(Order order : orders){
-            String item = order.getQuantity() + "x " + order.getFood().getName() + ".......... " + Food.getValueLocalCurrency(order.getTotal());
+            String item = order.getQuantity() + "x " + order.getFood().getName() + ".......... " + Utils.getValueLocalCurrency(order.getTotal());
             bill.append(item);
         }
 

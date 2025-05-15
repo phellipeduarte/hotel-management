@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class Room {
     private Integer capacity;
@@ -46,10 +45,6 @@ public class Room {
         return charge;
     }
 
-    public static String getValueLocalCurrency(Double value){
-        return "R$" + String.format(Locale.US, "%.2f", value);
-    }
-
     public Double getOrdersTotalValue(){
         return orders.stream().mapToDouble(Order::getTotal).sum();
     }
@@ -86,7 +81,7 @@ public class Room {
         String bed = "Room capacity: " + getCapacity() + "\n";
         String ac = "AC: " + (getLuxury() ? "Yes" : "No") + "\n";
         String freeBreakfast = "Free breakfast: Yes\n";
-        String chargeDay = "Charge per day: " + getValueLocalCurrency(getCharge()) + "\n";
+        String chargeDay = "Charge per day: " + Utils.getValueLocalCurrency(getCharge()) + "\n";
         return bed + ac + freeBreakfast + chargeDay;
     }
 }

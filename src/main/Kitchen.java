@@ -17,15 +17,15 @@ public final class Kitchen {
     }
 
     public String getMenuOptions(){
-        String options = "\nMenu:\n";
+        StringBuilder options = new StringBuilder("\nMenu:\n");
         Integer index = 1;
 
         for(Food food : this.getMenu()){
-            options += index + ". " + food.getName() + " - " + Food.getValueLocalCurrency(food.getPrice()) + "\n";
+            options.append(index).append(". ").append(food.getName()).append(" - ").append(Utils.getValueLocalCurrency(food.getPrice())).append("\n");
             index += 1;
         }
 
-        return options;
+        return options.toString();
     }
 
     private void setMenu() {
