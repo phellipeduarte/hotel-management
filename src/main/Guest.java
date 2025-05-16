@@ -11,6 +11,12 @@ public class Guest implements Serializable {
         this.gender = gender;
     }
 
+    public Guest(){
+        this.name = InputOutputHandler.waitStringAnswer("Enter guest name: ");
+        this.contact = InputOutputHandler.waitStringAnswer("Enter guest contact number: ");
+        this.gender = InputOutputHandler.waitStringAnswer("Enter guest gender: ");
+    }
+
     public String getName() {
         return name;
     }

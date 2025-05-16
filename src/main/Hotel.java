@@ -1,174 +1,105 @@
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class Hotel {
-    static Holder hotelOb = new Holder();
+public class Hotel implements Serializable {
 
-    public static void custDetails(int option, int room){
-        Guest guest1, guest2;
-        String name, contact, gender;
-        String name2 = null, contact2 = null;
-        String gender2 = "";
+    private final Room[] rooms = new Room[60];
 
-        name = InputOutputHandler.waitStringAnswer("Enter customer name: ");
+    public Room[] getRooms() {
+        return rooms;
+    }
 
-        contact = InputOutputHandler.waitStringAnswer("Enter contact number: ");
-
-        gender = InputOutputHandler.waitStringAnswer("Enter gender: ");
-
-        guest1 = new Guest(name, contact, gender);
-
-        if(option > 4 || option < 1){
-            throw new IllegalArgumentException("Enter a valid option.");
-        }
-
-        if(option < 3) {
-
-            name2 = InputOutputHandler.waitStringAnswer("Enter second customer name: ");
-
-            contact2= InputOutputHandler.waitStringAnswer("Enter contact number: ");
-
-            gender2 = InputOutputHandler.waitStringAnswer("Enter gender: ");
-
-            guest2 = new Guest(name2, contact2, gender2);
-
-            if(option == 1){
-                hotelOb.luxuryDoubleroom[room] = new Room(guest1, guest2);
-            } else {
-                hotelOb.deluxeDoubleroom[room] = new Room(guest1, guest2);
-            }
-
-            return;
+    public void allocateRoom(Room room, int roomNumber) throws NotAvailable {
+        if(rooms[roomNumber - 1] == null){
+            rooms[roomNumber - 1] = room;
         } else {
-
-            if(option == 3) {
-                hotelOb.luxurySingleeroom[room] = new Room(guest1);
-            } else {
-                hotelOb.deluxeSingleeroom[room] = new Room(guest1);
-            }
+            throw new NotAvailable();
         }
     }
 
-    public static void bookroom(int i){
-        int j;
-        int rn;
+    public void doubleRoomCustDetails(int roomNumber) throws NotAvailable {
+        Guest guest1, guest2;
 
+        guest1 = new Guest();
+        guest2 = new Guest();
+
+        allocateRoom(new Room(guest1, guest2), roomNumber);
+    }
+
+    public void singleRoomCustDetails(int roomNumber) throws NotAvailable {
+        Guest guest;
+        guest = new Guest();
+
+        allocateRoom(new Room(guest), roomNumber);
+    }
+
+    public void bookRoom(RoomTypeEnum roomType) throws NotAvailable {
         System.out.println("\nChoose room number from: ");
 
-        switch (i) {
-            case 1:
-                for(j = 0; j < hotelOb.luxuryDoubleroom.length; j++){
-                    if(hotelOb.luxuryDoubleroom[j] == null){
-                        System.out.print(j+1+",");
-                    }
-                }
+        List<Integer> roomInterval = getRoomIntervalByRoomType(roomType);
 
-                try{
-                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
-                    rn--;
+        int from = roomInterval.get(0);
+        int to = roomInterval.get(1);
 
-                    if(hotelOb.luxuryDoubleroom[rn] != null)
-                        throw new NotAvailable();
-                    custDetails(i,rn);
-                }
-                catch(Exception e){
-                    System.out.println("Invalid Option");
-                    return;
-                }
+        System.out.println(getEmptyRooms(from, to));
 
-                break;
+        int roomNumber = InputOutputHandler.waitIntegerAnswer("");
 
-            case 2:
-                for(j = 0; j < hotelOb.deluxeDoubleroom.length; j++)
-                {
-                    if(hotelOb.deluxeDoubleroom[j] == null){
-                        System.out.print(j + 11 + ",");
-                    }
-                }
-
-
-                try{
-                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
-                    rn = rn - 11;
-
-                    if(hotelOb.deluxeDoubleroom[rn] != null)
-                        throw new NotAvailable();
-                    custDetails(i,rn);
-
-                }
-                catch(Exception e){
-                    System.out.println("Invalid Option");
-                    return;
-                }
-
-                break;
-            case 3:
-
-                for(j = 0; j < hotelOb.luxurySingleeroom.length; j++){
-                    if(hotelOb.luxurySingleeroom[j] == null){
-                        System.out.print(j+31+",");
-                    }
-                }
-
-                try{
-                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
-                    rn = rn - 31;
-
-                    if(hotelOb.luxurySingleeroom[rn] != null)
-                        throw new NotAvailable();
-                    custDetails(i,rn);
-
-                }
-                catch(Exception e){
-                    System.out.println("Invalid Option");
-                    return;
-                }
-                break;
-
-            case 4:
-                for(j = 0; j < hotelOb.deluxeSingleeroom.length; j++){
-                    if(hotelOb.deluxeSingleeroom[j] == null){
-                        System.out.print(j + 41 + ",");
-                    }
-                }
-
-                try{
-                    rn = InputOutputHandler.waitIntegerAnswer("Enter room number: ");
-                    rn = rn - 41;
-
-                    if(hotelOb.deluxeSingleeroom[rn] != null)
-                        throw new NotAvailable();
-
-                    custDetails(i, rn);
-                }
-                catch(Exception e){
-                    System.out.println("Invalid Option");
-                    return;
-                }
-
-                break;
-
-            default:
-
-                System.out.println("Enter valid option");
-                break;
+        if(roomNumber > 30){
+            singleRoomCustDetails(roomNumber);
+        } else {
+            doubleRoomCustDetails(roomNumber);
         }
+
         System.out.println("Room Booked");
     }
 
-    public static String availability(int option)
-    {
+    public static List<Integer> getRoomIntervalByRoomType(RoomTypeEnum roomType){
+        int from = -1, to = -1;
+
+        switch (roomType){
+            case LUXURY_DOUBLEROOM -> {
+                from = 1;
+                to = 10;
+            }
+            case DELUXE_DOUBLEROOM -> {
+                from = 11;
+                to = 30;
+            }
+            case LUXURY_SINGLEROOM -> {
+                from = 31;
+                to = 40;
+            }
+            case DELUXE_SINGLEROOM -> {
+                from = 41;
+                to = 60;
+            }
+        }
+
+        return Arrays.asList(from, to);
+    }
+
+    public String getEmptyRooms(int from, int to){
+        StringBuilder emptyRooms = new StringBuilder();
+
+        for(int roomNumber = from; roomNumber < to + 1; roomNumber++){
+            if(rooms[roomNumber - 1] == null){
+                emptyRooms.append(roomNumber);
+
+                String joiner = roomNumber == to ? "." : ", ";
+                emptyRooms.append(joiner);
+            }
+        }
+
+        return emptyRooms.toString();
+    }
+
+    public String availability(RoomTypeEnum roomType) {
         String output;
 
-        List<Room[]> roomArrayOptions = Arrays.asList(
-            hotelOb.luxuryDoubleroom,
-            hotelOb.deluxeDoubleroom,
-            hotelOb.luxurySingleeroom,
-            hotelOb.deluxeSingleeroom
-        );
-
         try{
-            output = "Number of rooms available: " + countAvailableRooms(roomArrayOptions.get(option - 1));
+            output = "Number of rooms available: " + countAvailableRooms(roomType);
         } catch (IndexOutOfBoundsException exception){
             output = "Enter a valid option";
         }
@@ -176,10 +107,17 @@ public class Hotel {
         return output;
     }
 
-    public static Integer countAvailableRooms(Room[] roomArray){
+    public Integer countAvailableRooms(RoomTypeEnum roomType){
         Integer count = 0;
 
-        for (Room room : roomArray) {
+        List<Integer> roomInterval = getRoomIntervalByRoomType(roomType);
+
+        int from = roomInterval.get(0);
+        int to = roomInterval.get(1);
+
+        Room[] slicedRooms = Arrays.copyOfRange(rooms, from - 1, to);
+
+        for (Room room : slicedRooms) {
             if (room == null) {
                 count++;
             }
@@ -188,105 +126,29 @@ public class Hotel {
         return count;
     }
 
-    public static void deallocate(int rn, int rtype){
-        int j;
-        char w;
+    public void deallocate(int roomNumber){
+        Room room = getRoom(roomNumber);
 
-        switch (rtype) {
-            case 1:
-                if(hotelOb.luxuryDoubleroom[rn] != null)
-                    System.out.println("Room used by "+ hotelOb.luxuryDoubleroom[rn].getGuestsNames());
-                else{
-                    System.out.println("Empty Already");
-                    return;
-                }
+        if(room != null){
+            String guestString = room.getGuestsNames();
+            String question = "\nDo you want to checkout ?(y/n)\n";
 
-                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
+            char wish = InputOutputHandler.waitStringAnswer(guestString + question).charAt(0);
 
-                if(w == 'y' || w == 'Y'){
-                    hotelOb.luxuryDoubleroom[rn] = null;
-                    System.out.println("Deallocated succesfully");
-                }
-
-                break;
-
-            case 2:
-                if(hotelOb.deluxeDoubleroom[rn] != null)
-                    System.out.println("Room used by " + hotelOb.deluxeDoubleroom[rn].getGuestsNames());
-                else{
-                    System.out.println("Empty Already");
-                    return;
-                }
-
-                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
-
-                if(w == 'y' || w == 'Y'){
-                    hotelOb.deluxeDoubleroom[rn] = null;
-                    System.out.println("Deallocated succesfully");
-                }
-
-                break;
-
-            case 3:
-                if(hotelOb.luxurySingleeroom[rn] != null)
-                    System.out.println("Room used by "+ hotelOb.luxurySingleeroom[rn].getGuestsNames());
-                else{
-                    System.out.println("Empty Already");
-                    return;
-                }
-
-                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
-
-                if(w == 'y' || w=='Y'){
-                    hotelOb.luxurySingleeroom[rn] = null;
-                    System.out.println("Deallocated succesfully");
-                }
-
-                break;
-
-            case 4:
-                if(hotelOb.deluxeSingleeroom[rn] != null)
-                    System.out.println("Room used by " + hotelOb.deluxeSingleeroom[rn].getGuestsNames());
-                else{
-                    System.out.println("Empty Already");
-                    return;
-                }
-
-                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
-
-                if(w == 'y' || w == 'Y'){
-                    hotelOb.deluxeSingleeroom[rn] = null;
-                    System.out.println("Deallocated succesfully");
-                }
-                break;
-
-            default:
-                System.out.println("\nEnter valid option : ");
-                break;
+            if(wish == 'y' || wish == 'Y'){
+                rooms[roomNumber] = null;
+                System.out.println("Room deallocated succesfully");
+            }
+        } else {
+            System.out.println("Room empty already.");
         }
     }
 
-    public static Room getRoom(int roomNumber) {
-        Room room;
-
+    public Room getRoom(int roomNumber) {
         if(roomNumber > 60 || roomNumber < 1){
             throw new IllegalArgumentException("Enter a valid option");
         }
 
-        if(roomNumber < 11){
-            room = hotelOb.luxuryDoubleroom[roomNumber - 1];
-        } else{
-            if(roomNumber < 31){
-                room = hotelOb.deluxeDoubleroom[roomNumber - 11];
-            } else {
-                if(roomNumber < 41){
-                    room = hotelOb.luxurySingleeroom[roomNumber - 31];
-                } else {
-                    room = hotelOb.deluxeSingleeroom[roomNumber - 41];
-                }
-            }
-        }
-
-        return room;
+        return rooms[roomNumber - 1];
     }
 }

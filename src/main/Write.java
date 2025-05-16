@@ -2,20 +2,20 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
 public class Write implements Runnable {
-    Holder hotel_ob;
-    Write(Holder hotel_ob)
-    {
-        this.hotel_ob=hotel_ob;
+    Hotel hotel;
+    Write(Hotel hotel){
+        this.hotel = hotel;
     }
+
     @Override
     public void run() {
         try{
-            FileOutputStream fout=new FileOutputStream("backup");
-            ObjectOutputStream oos=new ObjectOutputStream(fout);
-            oos.writeObject(hotel_ob);
+            FileOutputStream fileOutputStream = new FileOutputStream("backup");
+            ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+            oos.writeObject(hotel);
         }
         catch(Exception e){
-            System.out.println("Error in writing "+e);
+            System.out.println("Error in writing " + e);
         }
 
     }
