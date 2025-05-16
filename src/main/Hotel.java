@@ -1,10 +1,9 @@
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Hotel {
     static Holder hotelOb = new Holder();
-    static Scanner scanner = new Scanner(System.in);
+
     public static void custDetails(int option, int room){
         Guest guest1, guest2;
         String name, contact, gender;
@@ -202,8 +201,7 @@ public class Hotel {
                     return;
                 }
 
-                System.out.println("Do you want to checkout ?(y/n)");
-                w= scanner.next().charAt(0);
+                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
 
                 if(w == 'y' || w == 'Y'){
                     hotelOb.luxuryDoubleroom[rn] = null;
@@ -220,8 +218,7 @@ public class Hotel {
                     return;
                 }
 
-                System.out.println(" Do you want to checkout ?(y/n)");
-                w = scanner.next().charAt(0);
+                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
 
                 if(w == 'y' || w == 'Y'){
                     hotelOb.deluxeDoubleroom[rn] = null;
@@ -238,8 +235,7 @@ public class Hotel {
                     return;
                 }
 
-                System.out.println(" Do you want to checkout ? (y/n)");
-                w = scanner.next().charAt(0);
+                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
 
                 if(w == 'y' || w=='Y'){
                     hotelOb.luxurySingleeroom[rn] = null;
@@ -256,8 +252,7 @@ public class Hotel {
                     return;
                 }
 
-                System.out.println(" Do you want to checkout ? (y/n)");
-                w = scanner.next().charAt(0);
+                w = InputOutputHandler.waitStringAnswer("Do you want to checkout ?(y/n)").charAt(0);
 
                 if(w == 'y' || w == 'Y'){
                     hotelOb.deluxeSingleeroom[rn] = null;
