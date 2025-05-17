@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public final class Kitchen {
-    private static Kitchen instance = new Kitchen();
+    private static final Kitchen instance = new Kitchen();
     private ArrayList<Food> menu = getMenu();
 
     private Kitchen() {

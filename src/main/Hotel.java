@@ -6,7 +6,7 @@ public class Hotel implements Serializable {
 
     private static final Hotel instance = new Hotel();
 
-    private final Room[] rooms = new Room[60];
+    private Room[] rooms = new Room[60];
 
     private Hotel(){}
 
@@ -95,5 +95,17 @@ public class Hotel implements Serializable {
         }
 
         return rooms[roomNumber - 1];
+    }
+
+    public void allocateRoom(Room room, int roomNumber) throws NotAvailable {
+        if(rooms[roomNumber - 1] == null){
+            rooms[roomNumber - 1] = room;
+        } else {
+            throw new NotAvailable();
+        }
+    }
+
+    public void deallocateRoom(int roomNumber){
+        rooms[roomNumber - 1] = null;
     }
 }

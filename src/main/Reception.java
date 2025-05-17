@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -5,7 +6,20 @@ import java.util.List;
 public final class Reception {
     private static final Reception instance = new Reception();
 
-    private Reception(){};
+    private final ArrayList<Room> roomOptions;
+
+    private Reception(){
+        roomOptions = new ArrayList<>(Arrays.asList(
+                new Room(2, true, 4000.0),
+                new Room(2, false, 3000.0),
+                new Room(1, true, 2200.0),
+                new Room(1, false, 1200.0)
+        ));
+    };
+
+    public ArrayList<Room> getRoomOptions() {
+        return roomOptions;
+    }
 
     public static Reception getInstance(){
         return instance;
@@ -13,13 +27,6 @@ public final class Reception {
 
     public String roomFeatures(int option){
         String features;
-
-        ArrayList<Room> roomOptions = new ArrayList<>(Arrays.asList(
-                new Room(2, true, 4000.0),
-                new Room(2, false, 3000.0),
-                new Room(1, true, 2200.0),
-                new Room(1, false, 1200.0)
-        ));
 
         try{
             features = roomOptions.get(option - 1).getRoomDetails();
@@ -48,34 +55,10 @@ public final class Reception {
         return bill.toString();
     }
 
-    public void allocateRoom(Room room, int roomNumber) throws NotAvailable {
-        Room[] rooms = Hotel.getInstance().getRooms();
-
-        if(rooms[roomNumber - 1] == null){
-            rooms[roomNumber - 1] = room;
-        } else {
-            throw new NotAvailable();
-        }
-    }
-
-    public void doubleRoomCustDetails(int roomNumber) throws NotAvailable {
-        Guest guest1, guest2;
-
-        guest1 = new Guest();
-        guest2 = new Guest();
-
-        allocateRoom(new Room(guest1, guest2), roomNumber);
-    }
-
-    public void singleRoomCustDetails(int roomNumber) throws NotAvailable {
-        Guest guest;
-        guest = new Guest();
-
-        allocateRoom(new Room(guest), roomNumber);
-    }
-
-    public void bookRoom(RoomTypeEnum roomType) throws NotAvailable {
+    public void checkin(RoomTypeEnum roomType) throws NotAvailable {
         System.out.println("\nChoose room number from: ");
+
+        Room roomFrame = roomOptions.get(roomType.ordinal());
 
         List<Integer> roomInterval = Hotel.getInstance().getRoomIntervalByRoomType(roomType);
 
@@ -87,12 +70,28 @@ public final class Reception {
         int roomNumber = InputOutputHandler.waitIntegerAnswer("");
 
         if(roomNumber > 30){
-            singleRoomCustDetails(roomNumber);
+            singleRoomCustDetails(roomNumber, roomFrame);
         } else {
-            doubleRoomCustDetails(roomNumber);
+            doubleRoomCustDetails(roomNumber, roomFrame);
         }
 
         System.out.println("Room Booked");
+    }
+
+    public void singleRoomCustDetails(int roomNumber, Room roomFrame) throws NotAvailable {
+        Guest guest;
+        guest = new Guest();
+
+        Hotel.getInstance().allocateRoom(new Room(guest, roomFrame), roomNumber);
+    }
+
+    public void doubleRoomCustDetails(int roomNumber, Room roomFrame) throws NotAvailable {
+        Guest guest1, guest2;
+
+        guest1 = new Guest();
+        guest2 = new Guest();
+
+        Hotel.getInstance().allocateRoom(new Room(guest1, guest2, roomFrame), roomNumber);
     }
 
     public void checkout(int roomNumber){
@@ -105,15 +104,12 @@ public final class Reception {
             char wish = InputOutputHandler.waitStringAnswer(guestString + question).charAt(0);
 
             if(wish == 'y' || wish == 'Y'){
-                deallocateRoom(roomNumber);
+                System.out.println(bill(room));
+                Hotel.getInstance().deallocateRoom(roomNumber);
                 System.out.println("Room deallocated succesfully");
             }
         } else {
             System.out.println("Room empty already.");
         }
-    }
-
-    public void deallocateRoom(int roomNumber){
-        Hotel.getInstance().getRooms()[roomNumber] = null;
     }
 }

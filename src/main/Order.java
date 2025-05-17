@@ -1,4 +1,6 @@
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
 
     private Food food;
     private int quantity;

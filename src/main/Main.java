@@ -39,7 +39,7 @@ public class Main {
 
                     case 3:
                         answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                        Reception.getInstance().bookRoom(RoomTypeEnum.values()[answer2 - 1]);
+                        Reception.getInstance().checkin(RoomTypeEnum.values()[answer2 - 1]);
                         break;
 
                     case 4:
@@ -59,9 +59,18 @@ public class Main {
                          Reception.getInstance().checkout(answer2);
 
                     case 6:
-                        break x;
+                        for(Room room : Hotel.getInstance().getRooms()){
+                            if(room != null) {
+                                System.out.println(room.getGuestsNames());
+                            }
+                        }
+
+
 
             }
+                Thread thread = new Thread(new Write(hotel));
+                thread.start();
+
                 wish = InputOutputHandler.waitStringAnswer("\nContinue : (y/n)").charAt(0);
 
                 if(!(wish=='y'||wish=='Y'||wish=='n'||wish=='N')){
@@ -70,9 +79,6 @@ public class Main {
                 }
 
             } while(wish=='y'||wish=='Y');
-
-            Thread thread = new Thread(new Write(hotel));
-            thread.start();
 
         }
         catch(FileNotFoundException exception){

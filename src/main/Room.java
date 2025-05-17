@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Room {
+public class Room implements Serializable {
     private Integer capacity;
     private Boolean luxury;
     private Double charge;
@@ -15,17 +16,21 @@ public class Room {
         this.charge = charge;
     }
 
-    public Room(Guest guest) {
+    public Room(Guest guest, Room roomFrame) {
         capacity = 1;
         guests = new ArrayList<>();
         guests.add(guest);
+        luxury = roomFrame.luxury;
+        charge = roomFrame.charge;
     }
 
-    public Room(Guest guest1, Guest guest2) {
+    public Room(Guest guest1, Guest guest2, Room roomFrame) {
         capacity = 2;
         guests = new ArrayList<>();
         guests.add(guest1);
         guests.add(guest2);
+        luxury = roomFrame.luxury;
+        charge = roomFrame.charge;
     }
 
 

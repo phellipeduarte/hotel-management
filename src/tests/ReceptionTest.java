@@ -4,16 +4,14 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReceptionTest {
-
-    Reception reception = Reception.getInstance();
     Hotel hotel = Hotel.getInstance();
 
     @BeforeEach
     void deallocateAllRooms(){
         Room[] rooms = hotel.getRooms();
 
-        for(int index = 0; index < rooms.length; index++){
-            reception.deallocateRoom(index);
+        for(int index = 1; index <= rooms.length; index++){
+            hotel.deallocateRoom(index);
         }
     }
 
@@ -26,7 +24,7 @@ public class ReceptionTest {
     @Test
     void shouldCountAvailableRoomsExceptAssignedRoom() throws NotAvailable {
         Room expectedRoom = new Room(2, false, 3000.0);
-        reception.allocateRoom(expectedRoom, 9);
+        hotel.allocateRoom(expectedRoom, 9);
 
         assertEquals(9, hotel.countAvailableRooms(RoomTypeEnum.LUXURY_DOUBLEROOM));
     }
@@ -34,7 +32,7 @@ public class ReceptionTest {
     @Test
     void shouldReturnRoomByNumber() throws NotAvailable {
         Room expectedRoom = new Room(2, false, 3000.0);
-        reception.allocateRoom(expectedRoom, 19);
+        hotel.allocateRoom(expectedRoom, 19);
 
         Room room = hotel.getRoom(19);
 
@@ -51,7 +49,7 @@ public class ReceptionTest {
     @Test
     void shouldReturnBill(){
         Guest guest = new Guest("Phellipe", "3223", "M");
-        Room room = new Room(guest);
+        Room room = new Room(guest, Reception.getInstance().getRoomOptions().get(3));
         room.setCharge(3000.0);
         room.addOrder(new Food("Pasta", 50.0), 1);
 

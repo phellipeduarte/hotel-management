@@ -9,14 +9,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class HotelTest {
 
     Hotel hotel = Hotel.getInstance();
-    Reception reception = Reception.getInstance();
 
     @BeforeEach
     void deallocateAllRooms(){
         Room[] rooms = hotel.getRooms();
 
-        for(int index = 0; index < rooms.length; index++){
-            reception.deallocateRoom(index);
+        for(int index = 1; index <= rooms.length; index++){
+            hotel.deallocateRoom(index);
         }
     }
 
@@ -68,9 +67,9 @@ public class HotelTest {
     @Test
     void shouldReturnAvailableRooms() throws NotAvailable {
         Guest guest = new Guest("Phellipe", "3223", "M");
-        Room room = new Room(guest);
+        Room room = new Room(guest, Reception.getInstance().getRoomOptions().get(3));
 
-        reception.allocateRoom(room, 2);
+        hotel.allocateRoom(room, 2);
 
         assertEquals("1, 3, 4, 5, 6, 7, 8, 9, 10.", hotel.getEmptyRooms(1, 10));
     }
