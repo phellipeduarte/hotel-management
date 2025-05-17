@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public final class Reception {
     private static final Reception instance = new Reception();
@@ -45,5 +46,74 @@ public final class Reception {
         }
 
         return bill.toString();
+    }
+
+    public void allocateRoom(Room room, int roomNumber) throws NotAvailable {
+        Room[] rooms = Hotel.getInstance().getRooms();
+
+        if(rooms[roomNumber - 1] == null){
+            rooms[roomNumber - 1] = room;
+        } else {
+            throw new NotAvailable();
+        }
+    }
+
+    public void doubleRoomCustDetails(int roomNumber) throws NotAvailable {
+        Guest guest1, guest2;
+
+        guest1 = new Guest();
+        guest2 = new Guest();
+
+        allocateRoom(new Room(guest1, guest2), roomNumber);
+    }
+
+    public void singleRoomCustDetails(int roomNumber) throws NotAvailable {
+        Guest guest;
+        guest = new Guest();
+
+        allocateRoom(new Room(guest), roomNumber);
+    }
+
+    public void bookRoom(RoomTypeEnum roomType) throws NotAvailable {
+        System.out.println("\nChoose room number from: ");
+
+        List<Integer> roomInterval = Hotel.getInstance().getRoomIntervalByRoomType(roomType);
+
+        int from = roomInterval.get(0);
+        int to = roomInterval.get(1);
+
+        System.out.println(Hotel.getInstance().getEmptyRooms(from, to));
+
+        int roomNumber = InputOutputHandler.waitIntegerAnswer("");
+
+        if(roomNumber > 30){
+            singleRoomCustDetails(roomNumber);
+        } else {
+            doubleRoomCustDetails(roomNumber);
+        }
+
+        System.out.println("Room Booked");
+    }
+
+    public void checkout(int roomNumber){
+        Room room = Hotel.getInstance().getRoom(roomNumber);
+
+        if(room != null){
+            String guestString = room.getGuestsNames();
+            String question = "\nDo you want to checkout ?(y/n)\n";
+
+            char wish = InputOutputHandler.waitStringAnswer(guestString + question).charAt(0);
+
+            if(wish == 'y' || wish == 'Y'){
+                deallocateRoom(roomNumber);
+                System.out.println("Room deallocated succesfully");
+            }
+        } else {
+            System.out.println("Room empty already.");
+        }
+    }
+
+    public void deallocateRoom(int roomNumber){
+        Hotel.getInstance().getRooms()[roomNumber] = null;
     }
 }

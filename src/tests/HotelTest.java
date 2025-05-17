@@ -8,11 +8,16 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class HotelTest {
 
-    Hotel hotel;
+    Hotel hotel = Hotel.getInstance();
+    Reception reception = Reception.getInstance();
 
     @BeforeEach
-    void setUp(){
-        hotel = new Hotel();
+    void deallocateAllRooms(){
+        Room[] rooms = hotel.getRooms();
+
+        for(int index = 0; index < rooms.length; index++){
+            reception.deallocateRoom(index);
+        }
     }
 
     @Test
@@ -23,25 +28,6 @@ public class HotelTest {
     @Test
     void shouldCountAvailableRooms(){
         assertEquals(10, hotel.countAvailableRooms(RoomTypeEnum.LUXURY_DOUBLEROOM));
-    }
-
-    @Test
-    void shouldCountAvailableRoomsExceptAssignedRoom() throws NotAvailable {
-        Room expectedRoom = new Room(2, false, 3000.0);
-        hotel.allocateRoom(expectedRoom, 9);
-
-        assertEquals(9, hotel.countAvailableRooms(RoomTypeEnum.LUXURY_DOUBLEROOM));
-    }
-
-    @Test
-    void shouldReturnRoomByNumber() throws NotAvailable {
-        Room expectedRoom = new Room(2, false, 3000.0);
-        hotel.allocateRoom(expectedRoom, 19);
-
-        Room room = hotel.getRoom(19);
-
-        assertEquals(expectedRoom.getRoomDetails(), room.getRoomDetails());
-        hotel.getRooms()[19] = null;
     }
 
     @Test
@@ -66,16 +52,16 @@ public class HotelTest {
 
     @Test
     void shouldReturnIntervalForEveryRoomType(){
-        List<Integer> interval = Hotel.getRoomIntervalByRoomType(RoomTypeEnum.LUXURY_DOUBLEROOM);
+        List<Integer> interval = hotel.getRoomIntervalByRoomType(RoomTypeEnum.LUXURY_DOUBLEROOM);
         assertEquals("[1, 10]", interval.toString());
 
-        interval = Hotel.getRoomIntervalByRoomType(RoomTypeEnum.DELUXE_DOUBLEROOM);
+        interval = hotel.getRoomIntervalByRoomType(RoomTypeEnum.DELUXE_DOUBLEROOM);
         assertEquals("[11, 30]", interval.toString());
 
-        interval = Hotel.getRoomIntervalByRoomType(RoomTypeEnum.LUXURY_SINGLEROOM);
+        interval = hotel.getRoomIntervalByRoomType(RoomTypeEnum.LUXURY_SINGLEROOM);
         assertEquals("[31, 40]", interval.toString());
 
-        interval = Hotel.getRoomIntervalByRoomType(RoomTypeEnum.DELUXE_SINGLEROOM);
+        interval = hotel.getRoomIntervalByRoomType(RoomTypeEnum.DELUXE_SINGLEROOM);
         assertEquals("[41, 60]", interval.toString());
     }
 
@@ -84,7 +70,7 @@ public class HotelTest {
         Guest guest = new Guest("Phellipe", "3223", "M");
         Room room = new Room(guest);
 
-        hotel.allocateRoom(room, 2);
+        reception.allocateRoom(room, 2);
 
         assertEquals("1, 3, 4, 5, 6, 7, 8, 9, 10.", hotel.getEmptyRooms(1, 10));
     }

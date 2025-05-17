@@ -4,58 +4,21 @@ import java.util.List;
 
 public class Hotel implements Serializable {
 
+    private static final Hotel instance = new Hotel();
+
     private final Room[] rooms = new Room[60];
+
+    private Hotel(){}
+
+    public static Hotel getInstance(){
+        return instance;
+    }
 
     public Room[] getRooms() {
         return rooms;
     }
 
-    public void allocateRoom(Room room, int roomNumber) throws NotAvailable {
-        if(rooms[roomNumber - 1] == null){
-            rooms[roomNumber - 1] = room;
-        } else {
-            throw new NotAvailable();
-        }
-    }
-
-    public void doubleRoomCustDetails(int roomNumber) throws NotAvailable {
-        Guest guest1, guest2;
-
-        guest1 = new Guest();
-        guest2 = new Guest();
-
-        allocateRoom(new Room(guest1, guest2), roomNumber);
-    }
-
-    public void singleRoomCustDetails(int roomNumber) throws NotAvailable {
-        Guest guest;
-        guest = new Guest();
-
-        allocateRoom(new Room(guest), roomNumber);
-    }
-
-    public void bookRoom(RoomTypeEnum roomType) throws NotAvailable {
-        System.out.println("\nChoose room number from: ");
-
-        List<Integer> roomInterval = getRoomIntervalByRoomType(roomType);
-
-        int from = roomInterval.get(0);
-        int to = roomInterval.get(1);
-
-        System.out.println(getEmptyRooms(from, to));
-
-        int roomNumber = InputOutputHandler.waitIntegerAnswer("");
-
-        if(roomNumber > 30){
-            singleRoomCustDetails(roomNumber);
-        } else {
-            doubleRoomCustDetails(roomNumber);
-        }
-
-        System.out.println("Room Booked");
-    }
-
-    public static List<Integer> getRoomIntervalByRoomType(RoomTypeEnum roomType){
+    public List<Integer> getRoomIntervalByRoomType(RoomTypeEnum roomType){
         int from = -1, to = -1;
 
         switch (roomType){
@@ -124,24 +87,6 @@ public class Hotel implements Serializable {
         }
 
         return count;
-    }
-
-    public void deallocate(int roomNumber){
-        Room room = getRoom(roomNumber);
-
-        if(room != null){
-            String guestString = room.getGuestsNames();
-            String question = "\nDo you want to checkout ?(y/n)\n";
-
-            char wish = InputOutputHandler.waitStringAnswer(guestString + question).charAt(0);
-
-            if(wish == 'y' || wish == 'Y'){
-                rooms[roomNumber] = null;
-                System.out.println("Room deallocated succesfully");
-            }
-        } else {
-            System.out.println("Room empty already.");
-        }
     }
 
     public Room getRoom(int roomNumber) {

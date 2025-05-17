@@ -3,7 +3,7 @@ import java.io.*;
 public class Main {
     public static void main(String[] args){
 
-        Hotel hotel = new Hotel();
+        Hotel hotel = Hotel.getInstance();
         
         try {
             File file = new File("backup");
@@ -39,7 +39,7 @@ public class Main {
 
                     case 3:
                         answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                        hotel.bookRoom(RoomTypeEnum.values()[answer2 - 1]);
+                        Reception.getInstance().bookRoom(RoomTypeEnum.values()[answer2 - 1]);
                         break;
 
                     case 4:
@@ -56,20 +56,7 @@ public class Main {
 
                     case 5:
                          answer2 = InputOutputHandler.waitIntegerAnswer(ROOM_NUMBER);
-
-                         if(answer2>60)
-                             System.out.println("Room doesn't exist");
-                         else if(answer2>40)
-                             hotel.deallocate(answer2);
-                         else if(answer2>30)
-                             hotel.deallocate(answer2);
-                         else if(answer2>10)
-                             hotel.deallocate(answer2);
-                         else if(answer2>0)
-                             hotel.deallocate(answer2);
-                         else
-                             System.out.println("Room doesn't exist");
-                         break;
+                         Reception.getInstance().checkout(answer2);
 
                     case 6:
                         break x;

@@ -1,14 +1,46 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReceptionTest {
 
+    Reception reception = Reception.getInstance();
+    Hotel hotel = Hotel.getInstance();
+
+    @BeforeEach
+    void deallocateAllRooms(){
+        Room[] rooms = hotel.getRooms();
+
+        for(int index = 0; index < rooms.length; index++){
+            reception.deallocateRoom(index);
+        }
+    }
+
     @Test
     void shouldReturnRoomOption(){
         final String expectedOption = "Room capacity: 2\nAC: Yes\nFree breakfast: Yes\nCharge per day: R$4000.00\n";
         assertEquals(expectedOption, Reception.getInstance().roomFeatures(1));
     }
+
+    @Test
+    void shouldCountAvailableRoomsExceptAssignedRoom() throws NotAvailable {
+        Room expectedRoom = new Room(2, false, 3000.0);
+        reception.allocateRoom(expectedRoom, 9);
+
+        assertEquals(9, hotel.countAvailableRooms(RoomTypeEnum.LUXURY_DOUBLEROOM));
+    }
+
+    @Test
+    void shouldReturnRoomByNumber() throws NotAvailable {
+        Room expectedRoom = new Room(2, false, 3000.0);
+        reception.allocateRoom(expectedRoom, 19);
+
+        Room room = hotel.getRoom(19);
+
+        assertEquals(expectedRoom.getRoomDetails(), room.getRoomDetails());
+    }
+
 
     @Test
     void shouldReturnValidation(){
