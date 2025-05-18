@@ -1,4 +1,6 @@
 import java.io.*;
+import java.security.InvalidParameterException;
+import java.security.spec.InvalidParameterSpecException;
 import java.util.Map;
 
 public class Main {
@@ -37,7 +39,11 @@ public class Main {
 
                 Runnable option = options.get(answer);
 
-                option.run();
+                try {
+                    option.run();
+                } catch (NullPointerException | ArrayIndexOutOfBoundsException exception){
+                    System.out.println("Invalid option.");
+                }
 
                 wish = InputOutputHandler.waitStringAnswer("\nContinue : (y/n)").charAt(0);
 
@@ -54,10 +60,9 @@ public class Main {
         }
         catch(FileNotFoundException exception){
             System.out.println(exception.getMessage());
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | ClassNotFoundException exception) {
+            throw new RuntimeException(exception);
         }
-
     }
 
     private static void displayDetails() {
@@ -83,9 +88,15 @@ public class Main {
         try {
             Integer menuOption = InputOutputHandler.waitIntegerAnswer(Kitchen.getInstance().getMenuOptions());
             Integer quantity = InputOutputHandler.waitIntegerAnswer("Quantity: ");
+
+            if(quantity < 1) throw new InvalidParameterException("Invalid quantity.");
+
             kitchen.order(menuOption, quantity, hotel.getRoom(getRoomNumber()));
+
         } catch (IllegalArgumentException exception){
             System.out.println(exception.getMessage());
+        } catch (IndexOutOfBoundsException exception){
+            System.out.println("Invalid option.");
         }
     }
 

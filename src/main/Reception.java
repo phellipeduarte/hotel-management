@@ -64,13 +64,21 @@ public final class Reception {
         int from = roomInterval.get(0);
         int to = roomInterval.get(1);
 
+        if(from == -1 || to == -1){
+            System.out.println("Invalid option.");
+            return;
+        }
+
         System.out.println(Hotel.getInstance().getEmptyRooms(from, to));
 
         int roomNumber = InputOutputHandler.waitIntegerAnswer("");
 
-        roomCustDetails(roomNumber, roomFrame);
-
-        System.out.println("Room Booked");
+        if(roomNumber < from || roomNumber  > to){
+            System.out.println("Invalid option.");
+        } else {
+            roomCustDetails(roomNumber, roomFrame);
+            System.out.println("Room Booked");
+        }
     }
 
     public void roomCustDetails(int roomNumber, Room roomFrame) throws NotAvailable {
