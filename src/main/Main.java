@@ -1,9 +1,16 @@
 import java.io.*;
+import java.util.Map;
 
 public class Main {
-    public static void main(String[] args){
+    static Reception reception = Reception.getInstance();
+    static Kitchen kitchen = Kitchen.getInstance();
 
-        Hotel hotel = Hotel.getInstance();
+    static Hotel hotel = Hotel.getInstance();
+
+    static final String CHOOSE_ROOM_TYPE = "Choose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room \n4.Deluxe Single Room";
+    static final String ROOM_NUMBER = "Room Number - ";
+
+    public static void main(String[] args){
         
         try {
             File file = new File("backup");
@@ -14,62 +21,32 @@ public class Main {
                 hotel = (Hotel) objectInputStream.readObject();
             }
 
-            int answer,answer2;
             char wish;
-            x:
 
-            do{
-                answer = InputOutputHandler.waitIntegerAnswer("Enter your choice :\n1.Display room details\n2.Display room availability \n3.Book\n4.Order food\n5.Checkout\n6.Exit");
+            do {
+                int answer = InputOutputHandler.waitIntegerAnswer("Enter your choice :\n1.Display room details\n2.Display room availability \n3.Book\n4.Order food\n5.Checkout\n6.Exit");
 
-                final String CHOOSE_ROOM_TYPE = "Choose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room \n4.Deluxe Single Room";
-                final String ROOM_NUMBER = "Room Number - ";
+                Map<Integer, Runnable> options = Map.of(
+                        1, Main::displayDetails,
+                        2, Main::displayAvailability,
+                        3, Main::bookRoom,
+                        4, Main::orderFood,
+                        5, Main::checkoutRoom,
+                        6, Main::exit
+                );
 
-                switch(answer){
-                    case 1:
-                        answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                        String features = Reception.getInstance().roomFeatures(answer2);
-                        System.out.println(features);
-                        break;
+                Runnable option = options.get(answer);
 
-                    case 2:
-                        answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                        String availability = hotel.availability(RoomTypeEnum.values()[answer2 - 1]);
-                        System.out.println(availability);
-                        break;
+                option.run();
 
-                    case 3:
-                        answer2 = InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
-                        Reception.getInstance().checkin(RoomTypeEnum.values()[answer2 - 1]);
-                        break;
-
-                    case 4:
-                        answer2 = InputOutputHandler.waitIntegerAnswer(ROOM_NUMBER);
-                        try {
-                            Integer answer3 = InputOutputHandler.waitIntegerAnswer(Kitchen.getInstance().getMenuOptions());
-                            Integer quantity = InputOutputHandler.waitIntegerAnswer("Quantity: ");
-                            Kitchen.getInstance().order(answer3, quantity, hotel.getRoom(answer2));
-                            break;
-                        } catch (IllegalArgumentException exception){
-                            System.out.println(exception.getMessage());
-                        }
-
-
-                    case 5:
-                         answer2 = InputOutputHandler.waitIntegerAnswer(ROOM_NUMBER);
-                         Reception.getInstance().checkout(answer2);
-
-                    case 6:
-                        break x;
-
-            }
                 wish = InputOutputHandler.waitStringAnswer("\nContinue : (y/n)").charAt(0);
 
-                if(!(wish=='y'||wish=='Y'||wish=='n'||wish=='N')){
+                if (!(wish == 'y' || wish == 'Y' || wish == 'n' || wish == 'N')) {
                     System.out.println("Invalid Option");
                     wish = InputOutputHandler.waitStringAnswer("\nContinue : (y/n)").charAt(0);
                 }
 
-            } while(wish=='y'||wish=='Y');
+            } while (wish == 'y' || wish == 'Y');
 
             Thread thread = new Thread(new Write(hotel));
             thread.start();
@@ -77,9 +54,57 @@ public class Main {
         }
         catch(FileNotFoundException exception){
             System.out.println(exception.getMessage());
-        } catch (IOException | ClassNotFoundException | NotAvailable e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private static void displayDetails() {
+        String features = reception.roomFeatures(getRoomTypePositionFromInput());
+        System.out.println(features);
+    }
+
+    private static void displayAvailability() {
+        String availability = hotel.availability(getRoomTypeEnumFromInput());
+        System.out.println(availability);
+    }
+
+    private static void bookRoom() {
+        try{
+            reception.checkin(getRoomTypeEnumFromInput());
+        } catch (NotAvailable exception){
+            System.out.println(exception.getMessage());
+        }
+
+    }
+
+    private static void orderFood() {
+        try {
+            Integer menuOption = InputOutputHandler.waitIntegerAnswer(Kitchen.getInstance().getMenuOptions());
+            Integer quantity = InputOutputHandler.waitIntegerAnswer("Quantity: ");
+            kitchen.order(menuOption, quantity, hotel.getRoom(getRoomNumber()));
+        } catch (IllegalArgumentException exception){
+            System.out.println(exception.getMessage());
+        }
+    }
+
+    private static void checkoutRoom() {
+        reception.checkout(getRoomNumber());
+    }
+
+    private static void exit() {
+    }
+
+    private static int getRoomTypePositionFromInput(){
+        return InputOutputHandler.waitIntegerAnswer(CHOOSE_ROOM_TYPE);
+    }
+
+    private static RoomTypeEnum getRoomTypeEnumFromInput(){
+        return RoomTypeEnum.values()[getRoomTypePositionFromInput() - 1];
+    }
+
+    private static int getRoomNumber(){
+        return InputOutputHandler.waitIntegerAnswer(ROOM_NUMBER);
     }
 }
