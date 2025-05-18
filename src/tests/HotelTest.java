@@ -20,6 +20,21 @@ public class HotelTest {
     }
 
     @Test
+    void shouldGetRoom() throws NotAvailable {
+        Guest guest1 = new Guest("Phellipe", "3223", "M");
+        Guest guest2 = new Guest("Larissa", "3113", "F");
+        Room expectedRoom = new Room(guest1, guest2, Reception.getInstance().getRoomOptions().get(0));
+
+        hotel.allocateRoom(expectedRoom, 5);
+
+        Room room = hotel.getRoom(5);
+
+        assertEquals(expectedRoom.getRoomDetails(), room.getRoomDetails());
+        assertEquals(expectedRoom.getGuestsNames(), room.getGuestsNames());
+    }
+
+
+    @Test
     void shouldReturnAvailabilty(){
         assertEquals("Number of rooms available: 10", hotel.availability(RoomTypeEnum.LUXURY_DOUBLEROOM));
     }

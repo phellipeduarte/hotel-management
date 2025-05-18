@@ -4,13 +4,18 @@ import java.util.List;
 
 public class Hotel implements Serializable {
 
-    private static final Hotel instance = new Hotel();
+    private static Hotel instance = new Hotel();
 
     private Room[] rooms = new Room[60];
 
     private Hotel(){}
 
     public static Hotel getInstance(){
+        return instance;
+    }
+
+    protected Object readResolve() {
+        instance = this;
         return instance;
     }
 
