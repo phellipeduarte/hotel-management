@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KitchenTest {
@@ -13,8 +15,11 @@ public class KitchenTest {
     @Test
     void shouldAddOrderToRoom(){
         Guest guest = new Guest("Phellipe", "3223", "M");
-        Room room = new Room(guest, Reception.getInstance().getRoomOptions().get(2));
+        List<Guest> guestList = List.of(guest);
+
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(2));
         Kitchen.getInstance().order(1, 1, room);
+
         assertEquals("Sandwich", room.getOrder(0).getFood().getName());
     }
 }

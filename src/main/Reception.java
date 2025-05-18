@@ -68,29 +68,20 @@ public final class Reception {
 
         int roomNumber = InputOutputHandler.waitIntegerAnswer("");
 
-        if(roomNumber > 30){
-            singleRoomCustDetails(roomNumber, roomFrame);
-        } else {
-            doubleRoomCustDetails(roomNumber, roomFrame);
-        }
+        roomCustDetails(roomNumber, roomFrame);
 
         System.out.println("Room Booked");
     }
 
-    public void singleRoomCustDetails(int roomNumber, Room roomFrame) throws NotAvailable {
-        Guest guest;
-        guest = new Guest();
+    public void roomCustDetails(int roomNumber, Room roomFrame) throws NotAvailable {
+        List<Guest> guestList = new ArrayList<>();
 
-        Hotel.getInstance().allocateRoom(new Room(guest, roomFrame), roomNumber);
-    }
+        for(int index = 0; index < roomFrame.getCapacity(); index++){
+            Guest guest = new Guest();
+            guestList.add(guest);
+        }
 
-    public void doubleRoomCustDetails(int roomNumber, Room roomFrame) throws NotAvailable {
-        Guest guest1, guest2;
-
-        guest1 = new Guest();
-        guest2 = new Guest();
-
-        Hotel.getInstance().allocateRoom(new Room(guest1, guest2, roomFrame), roomNumber);
+        Hotel.getInstance().allocateRoom(new Room(guestList, roomFrame), roomNumber);
     }
 
     public void checkout(int roomNumber){

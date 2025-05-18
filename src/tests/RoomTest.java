@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RoomTest {
@@ -7,7 +10,10 @@ public class RoomTest {
     @Test
     void shouldReturnGuestName(){
         Guest guest = new Guest("Phellipe", "3223", "M");
-        Room room = new Room(guest, Reception.getInstance().getRoomOptions().get(2));
+        List<Guest> guestList = List.of(guest);
+
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(2));
+
         assertEquals(room.getGuestsNames(), "Phellipe");
     }
 
@@ -16,7 +22,10 @@ public class RoomTest {
     void shouldReturnGuestsNames(){
         Guest guest1 = new Guest("Phellipe", "3223", "M");
         Guest guest2 = new Guest("Larissa", "2332", "F");
-        Room room = new Room(guest1, guest2, Reception.getInstance().getRoomOptions().get(0));
+        List<Guest> guestList = Arrays.asList(guest1, guest2);
+
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(0));
+
         assertEquals(room.getGuestsNames(), "Phellipe, Larissa.");
     }
 
@@ -24,7 +33,9 @@ public class RoomTest {
     @Test
     void shouldReturnOneGuestRoomDetails(){
         Guest guest = new Guest("Phellipe", "3223", "M");
-        Room room = new Room(guest, Reception.getInstance().getRoomOptions().get(2));
+        List<Guest> guestList = List.of(guest);
+
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(2));
         room.setLuxury(true);
         room.setCharge(4000.0);
 
@@ -35,8 +46,9 @@ public class RoomTest {
     void shouldReturnTwoGuestsRoomDetails(){
         Guest guest1 = new Guest("Phellipe", "3223", "M");
         Guest guest2 = new Guest("Larissa", "2332", "F");
+        List<Guest> guestList = List.of(guest1, guest2);
 
-        Room room = new Room(guest1, guest2, Reception.getInstance().getRoomOptions().get(0));
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(0));
         room.setLuxury(false);
         room.setCharge(6000.0);
 
@@ -47,8 +59,9 @@ public class RoomTest {
     void shouldReturnTotalValueOrders(){
         Guest guest1 = new Guest("Phellipe", "3223", "M");
         Guest guest2 = new Guest("Larissa", "2332", "F");
-        Room room = new Room(guest1, guest2, Reception.getInstance().getRoomOptions().get(0));
+        List<Guest> guestList = List.of(guest1, guest2);
 
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(0));
         room.addOrder(new Food("Pasta", 50.0), 2);
         room.addOrder(new Food("Coke", 15.0), 2);
 

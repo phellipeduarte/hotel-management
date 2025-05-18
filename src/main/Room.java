@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Room implements Serializable {
     private Integer capacity;
@@ -8,7 +9,7 @@ public class Room implements Serializable {
 
     private ArrayList<Order> orders = new ArrayList<>();
 
-    private ArrayList<Guest> guests;
+    private List<Guest> guests;
 
     public Room(Integer capacity, Boolean luxury, Double charge) {
         this.capacity = capacity;
@@ -16,21 +17,11 @@ public class Room implements Serializable {
         this.charge = charge;
     }
 
-    public Room(Guest guest, Room roomFrame) {
-        capacity = 1;
-        guests = new ArrayList<>();
-        guests.add(guest);
+    public Room(List<Guest> guestList, Room roomFrame){
+        capacity = roomFrame.capacity;
         luxury = roomFrame.luxury;
         charge = roomFrame.charge;
-    }
-
-    public Room(Guest guest1, Guest guest2, Room roomFrame) {
-        capacity = 2;
-        guests = new ArrayList<>();
-        guests.add(guest1);
-        guests.add(guest2);
-        luxury = roomFrame.luxury;
-        charge = roomFrame.charge;
+        guests = guestList;
     }
 
 

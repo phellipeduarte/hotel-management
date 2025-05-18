@@ -23,7 +23,8 @@ public class HotelTest {
     void shouldGetRoom() throws NotAvailable {
         Guest guest1 = new Guest("Phellipe", "3223", "M");
         Guest guest2 = new Guest("Larissa", "3113", "F");
-        Room expectedRoom = new Room(guest1, guest2, Reception.getInstance().getRoomOptions().get(0));
+        List<Guest> guestList = List.of(guest1, guest2);
+        Room expectedRoom = new Room(guestList, Reception.getInstance().getRoomOptions().get(0));
 
         hotel.allocateRoom(expectedRoom, 5);
 
@@ -82,8 +83,9 @@ public class HotelTest {
     @Test
     void shouldReturnAvailableRooms() throws NotAvailable {
         Guest guest = new Guest("Phellipe", "3223", "M");
-        Room room = new Room(guest, Reception.getInstance().getRoomOptions().get(3));
+        List<Guest> guestList = List.of(guest);
 
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(3));
         hotel.allocateRoom(room, 2);
 
         assertEquals("1, 3, 4, 5, 6, 7, 8, 9, 10.", hotel.getEmptyRooms(1, 10));
