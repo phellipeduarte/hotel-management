@@ -53,7 +53,7 @@ public class ReceptionTest {
         room.setCharge(3000.0);
         room.addOrder(new Food("Pasta", 50.0), 1);
 
-        String expectedResult = "\nBill:\nRoom charge: R$3000.00\nOrder charge: R$50.00\n====================\nQuantity x Item  ....  Price\n1x Pasta.......... R$50.00";
+        String expectedResult = "\nBill:\nTotal charge: R$3050.00\nRoom charge: R$3000.00\nOrder charge: R$50.00\n====================\nQuantity x Item  ....  Price\n1x Pasta.......... R$50.00";
 
         assertEquals(expectedResult, Reception.getInstance().bill(room));
     }
