@@ -1,3 +1,4 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -14,8 +15,13 @@ public class Hotel implements Serializable {
         return instance;
     }
 
+    public static void setInstance(Hotel hotel) {
+        instance = hotel;
+    }
+
+    @Serial
     protected Object readResolve() {
-        instance = this;
+        setInstance(this);
         return instance;
     }
 
