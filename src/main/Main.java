@@ -46,13 +46,15 @@ public class Main {
                     System.out.println(INVALID_OPTION);
                 }
 
-                char wish = InputOutputHandler.waitStringAnswer("\nContinue? (y/n)").toLowerCase().charAt(0);;
+                if(executing) {
+                    char wish = InputOutputHandler.waitStringAnswer("\nContinue? (y/n)").toLowerCase().charAt(0);
 
-                if (wish != 'y' && wish != 'n'){
-                    System.out.println(INVALID_OPTION);
-                } else {
-                    if(wish == 'n'){
-                        exit();
+                    if (wish != 'y' && wish != 'n') {
+                        System.out.println(INVALID_OPTION);
+                    } else {
+                        if (wish == 'n') {
+                            exit();
+                        }
                     }
                 }
             }
