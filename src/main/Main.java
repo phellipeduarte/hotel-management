@@ -8,8 +8,12 @@ public class Main {
 
     static Hotel hotel = Hotel.getInstance();
 
-    static final String CHOOSE_ROOM_TYPE = "Choose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room \n4.Deluxe Single Room";
+    static final String CHOOSE_ROOM_TYPE = "Choose room type:\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room \n4.Deluxe Single Room";
     static final String ROOM_NUMBER = "Room Number - ";
+
+    static final String INVALID_OPTION = "Invalid option.";
+
+    private static boolean executing = true;
 
     public static void main(String[] args){
         
@@ -22,10 +26,8 @@ public class Main {
                 hotel = (Hotel) objectInputStream.readObject();
             }
 
-            char wish;
-
-            do {
-                int answer = InputOutputHandler.waitIntegerAnswer("Enter your choice :\n1.Display room details\n2.Display room availability \n3.Book\n4.Order food\n5.Checkout\n6.Exit");
+            while (executing){
+                int answer = InputOutputHandler.waitIntegerAnswer("Enter your choice:\n1.Display room details\n2.Display room availability \n3.Book\n4.Order food\n5.Checkout\n6.Exit");
 
                 Map<Integer, Runnable> options = Map.of(
                         1, Main::displayDetails,
@@ -41,17 +43,19 @@ public class Main {
                 try {
                     option.run();
                 } catch (NullPointerException | ArrayIndexOutOfBoundsException exception){
-                    System.out.println("Invalid option.");
+                    System.out.println(INVALID_OPTION);
                 }
 
-                wish = InputOutputHandler.waitStringAnswer("\nContinue : (y/n)").charAt(0);
+                char wish = InputOutputHandler.waitStringAnswer("\nContinue? (y/n)").toLowerCase().charAt(0);;
 
-                if (!(wish == 'y' || wish == 'Y' || wish == 'n' || wish == 'N')) {
-                    System.out.println("Invalid Option");
-                    wish = InputOutputHandler.waitStringAnswer("\nContinue : (y/n)").charAt(0);
+                if (wish != 'y' && wish != 'n'){
+                    System.out.println(INVALID_OPTION);
+                } else {
+                    if(wish == 'n'){
+                        exit();
+                    }
                 }
-
-            } while (wish == 'y' || wish == 'Y');
+            }
 
             Thread thread = new Thread(new Write(hotel));
             thread.start();
@@ -104,6 +108,7 @@ public class Main {
     }
 
     private static void exit() {
+        executing = false;
     }
 
     private static int getRoomTypePositionFromInput(){
