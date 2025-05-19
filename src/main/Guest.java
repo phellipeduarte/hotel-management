@@ -20,4 +20,8 @@ public class Guest implements Serializable {
     public String getName() {
         return name;
     }
+
+    public String getGuestInformation(){
+        return "Guest name: " + name + "\nGuest contact: " + contact + "\nGuest gender: " + gender + "\n";
+    }
 }

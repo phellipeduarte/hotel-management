@@ -80,4 +80,14 @@ public class Room implements Serializable {
         String chargeDay = "Charge per day: " + Utils.getValueLocalCurrency(getCharge()) + "\n";
         return bed + ac + freeBreakfast + chargeDay;
     }
+
+    public String getGuestsInformation(){
+        StringBuilder guestInformation = new StringBuilder();
+
+        for(Guest guest : guests){
+            guestInformation.append(guest.getGuestInformation());
+        }
+
+        return guestInformation.toString();
+    }
 }

@@ -67,4 +67,17 @@ public class RoomTest {
 
         assertEquals(130.0, room.getOrdersTotalValue());
     }
+
+    @Test
+    void shouldReturnGuestInformation(){
+        Guest guest1 = new Guest("Phellipe", "3223", "M");
+        Guest guest2 = new Guest("Larissa", "2332", "F");
+        List<Guest> guestList = List.of(guest1, guest2);
+
+        Room room = new Room(guestList, Reception.getInstance().getRoomOptions().get(0));
+
+        String expectedGuestInformation = "Guest name: Phellipe\nGuest contact: 3223\nGuest gender: M\nGuest name: Larissa\nGuest contact: 2332\nGuest gender: F\n";
+
+        assertEquals(expectedGuestInformation, room.getGuestsInformation());
+    }
 }
