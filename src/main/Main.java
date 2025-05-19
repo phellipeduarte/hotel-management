@@ -16,15 +16,15 @@ public class Main {
     private static boolean executing = true;
 
     public static void main(String[] args){
-        
-        try {
-            File file = new File("backup");
 
-            if(file.exists()) {
-                FileInputStream fileInputStream = new FileInputStream(file);
-                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                hotel = (Hotel) objectInputStream.readObject();
-            }
+        File file = new File("backup");
+
+        try (
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        ){
+
+            hotel = (Hotel) objectInputStream.readObject();
 
             while (executing){
                 int answer = InputOutputHandler.waitIntegerAnswer("Enter your choice:\n1.Display room details\n2.Display room availability \n3.Book\n4.Order food\n5.Checkout\n6.Exit");
