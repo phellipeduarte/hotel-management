@@ -1,0 +1,6 @@
+*.iml
+backup
+
+.idea/
+.scannerwork/
+out/
