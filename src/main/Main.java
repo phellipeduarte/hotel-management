@@ -15,7 +15,7 @@ public class Main {
 
     private static boolean executing = true;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         File file = new File("backup");
 
@@ -62,7 +62,7 @@ public class Main {
         catch(FileNotFoundException exception){
             System.out.println(exception.getMessage());
         } catch (IOException | ClassNotFoundException exception) {
-            throw new RuntimeException(exception);
+            System.out.println("File compromised.");
         }
     }
 
