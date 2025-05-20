@@ -7,7 +7,7 @@ public class Room implements Serializable {
     private Boolean luxury;
     private Double charge;
 
-    private ArrayList<Order> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
     private List<Guest> guests;
 
@@ -27,10 +27,6 @@ public class Room implements Serializable {
 
     public Integer getCapacity() {
         return capacity;
-    }
-
-    public Boolean getLuxury() {
-        return luxury;
     }
 
     public void setLuxury(Boolean luxury) {
@@ -57,7 +53,7 @@ public class Room implements Serializable {
         return orders.get(orderIndex);
     }
 
-    public ArrayList<Order> getOrders(){
+    public List<Order> getOrders(){
         return orders;
     }
 

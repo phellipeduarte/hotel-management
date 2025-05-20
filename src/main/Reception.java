@@ -44,7 +44,7 @@ public final class Reception {
 
         bill.append(totalCharge).append(roomCharge).append(foodCharge);
 
-        ArrayList<Order> orders = room.getOrders();
+        List<Order> orders = room.getOrders();
 
         for(Order order : orders){
             String item = order.getQuantity() + "x " + order.getFood().getName() + ".......... " + Utils.getValueLocalCurrency(order.getTotal()) + "\n";
