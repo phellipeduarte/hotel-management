@@ -30,7 +30,8 @@ public class Hotel implements Serializable {
     }
 
     public List<Integer> getRoomIntervalByRoomType(RoomTypeEnum roomType){
-        int from = -1, to = -1;
+        int from = -1;
+        int to = -1;
 
         switch (roomType){
             case LUXURY_DOUBLEROOM -> {
