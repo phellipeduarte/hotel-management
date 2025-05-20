@@ -16,7 +16,7 @@ public final class Reception {
         ));
     };
 
-    public ArrayList<Room> getRoomOptions() {
+    public List<Room> getRoomOptions() {
         return roomOptions;
     }
 

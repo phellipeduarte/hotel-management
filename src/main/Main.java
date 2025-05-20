@@ -19,6 +19,11 @@ public class Main {
 
         File file = new File("backup");
 
+        if(!file.exists()){
+            Write write = new Write(hotel);
+            write.run();
+        }
+
         try (
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
