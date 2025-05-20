@@ -4,10 +4,11 @@ import domain.order.Food;
 import utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class Kitchen {
     private static final Kitchen instance = new Kitchen();
-    private ArrayList<Food> menu = getMenu();
+    private List<Food> menu = getMenu();
 
     private Kitchen() {
         setMenu();
@@ -17,7 +18,7 @@ public final class Kitchen {
         return instance;
     }
 
-    public ArrayList<Food> getMenu() {
+    public List<Food> getMenu() {
         return menu;
     }
 
@@ -34,11 +35,12 @@ public final class Kitchen {
     }
 
     private void setMenu() {
-        menu = new ArrayList<>();
-        menu.add(new Food("Sandwich", 50.0));
-        menu.add(new Food("Pasta", 60.0));
-        menu.add(new Food("Noodles", 70.0));
-        menu.add(new Food("Coke", 30.0));
+        menu = List.of(
+            new Food("Sandwich", 50.0),
+            new Food("Pasta", 60.0),
+            new Food("Noodles", 70.0),
+            new Food("Coke", 30.0)
+        );
     }
 
     public void order(Integer menuIndex, Integer quantity, Room room){
