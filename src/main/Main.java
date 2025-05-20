@@ -110,7 +110,7 @@ public class Main {
         } catch (IllegalArgumentException exception){
             System.out.println(exception.getMessage());
         } catch (IndexOutOfBoundsException exception){
-            System.out.println("Invalid option.");
+            System.out.println(INVALID_OPTION);
         }
     }
 
