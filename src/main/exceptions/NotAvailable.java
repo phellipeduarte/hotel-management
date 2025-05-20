@@ -1,3 +1,5 @@
+package exceptions;
+
 public class NotAvailable extends Exception {
     @Override
     public String toString()

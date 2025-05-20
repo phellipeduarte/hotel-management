@@ -1,3 +1,9 @@
+import domain.guest.Guest;
+import domain.hotel.Hotel;
+import domain.hotel.Reception;
+import domain.hotel.Room;
+import enums.RoomTypeEnum;
+import exceptions.NotAvailable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

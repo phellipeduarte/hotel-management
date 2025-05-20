@@ -1,3 +1,10 @@
+package domain.hotel;
+
+import domain.order.Food;
+import domain.order.Order;
+import domain.guest.Guest;
+import utils.Utils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,13 @@
+package utils;
+
+import domain.hotel.Hotel;
+
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
 public class Write implements Runnable {
     Hotel hotel;
-    Write(Hotel hotel){
+    public Write(Hotel hotel){
         this.hotel = hotel;
     }
 

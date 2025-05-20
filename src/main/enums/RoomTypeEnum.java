@@ -1,3 +1,5 @@
+package enums;
+
 public enum RoomTypeEnum {
     LUXURY_DOUBLEROOM,
     DELUXE_DOUBLEROOM,

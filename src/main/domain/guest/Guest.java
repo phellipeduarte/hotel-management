@@ -1,3 +1,7 @@
+package domain.guest;
+
+import utils.InputOutputHandler;
+
 import java.io.Serializable;
 
 public class Guest implements Serializable {

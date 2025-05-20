@@ -1,3 +1,8 @@
+package domain.hotel;
+
+import domain.order.Food;
+import utils.Utils;
+
 import java.util.ArrayList;
 
 public final class Kitchen {

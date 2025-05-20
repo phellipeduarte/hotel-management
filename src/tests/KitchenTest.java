@@ -1,3 +1,7 @@
+import domain.guest.Guest;
+import domain.hotel.Kitchen;
+import domain.hotel.Reception;
+import domain.hotel.Room;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

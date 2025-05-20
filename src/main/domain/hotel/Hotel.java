@@ -1,3 +1,8 @@
+package domain.hotel;
+
+import enums.RoomTypeEnum;
+import exceptions.NotAvailable;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;

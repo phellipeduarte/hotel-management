@@ -1,3 +1,12 @@
+package domain.hotel;
+
+import domain.order.Order;
+import domain.guest.Guest;
+import enums.RoomTypeEnum;
+import exceptions.NotAvailable;
+import utils.InputOutputHandler;
+import utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
