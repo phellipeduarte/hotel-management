@@ -3,7 +3,6 @@ package domain.hotel;
 import domain.order.Food;
 import utils.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class Kitchen {
