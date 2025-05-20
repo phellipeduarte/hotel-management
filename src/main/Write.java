@@ -9,10 +9,12 @@ public class Write implements Runnable {
 
     @Override
     public void run() {
-        try{
+
+        try(
             FileOutputStream fileOutputStream = new FileOutputStream("backup");
-            ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
-            oos.writeObject(hotel);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        ){
+            objectOutputStream.writeObject(hotel);
         }
         catch(Exception e){
             System.out.println("Error in writing " + e);

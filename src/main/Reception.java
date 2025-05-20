@@ -14,7 +14,7 @@ public final class Reception {
                 new Room(1, true, 2200.0),
                 new Room(1, false, 1200.0)
         ));
-    };
+    }
 
     public List<Room> getRoomOptions() {
         return roomOptions;
