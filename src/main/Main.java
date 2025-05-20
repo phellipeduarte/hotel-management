@@ -40,11 +40,7 @@ public class Main {
 
                 Runnable option = options.get(answer);
 
-                try {
-                    option.run();
-                } catch (NullPointerException | ArrayIndexOutOfBoundsException exception){
-                    System.out.println(INVALID_OPTION);
-                }
+                runChoosedOption(option);
 
                 if(executing) {
                     char wish = InputOutputHandler.waitStringAnswer("\nContinue? (y/n)").toLowerCase().charAt(0);
@@ -67,6 +63,14 @@ public class Main {
             System.out.println(exception.getMessage());
         } catch (IOException | ClassNotFoundException exception) {
             throw new RuntimeException(exception);
+        }
+    }
+
+    private static void runChoosedOption(Runnable option){
+        try {
+            option.run();
+        } catch (NullPointerException | ArrayIndexOutOfBoundsException exception){
+            System.out.println(INVALID_OPTION);
         }
     }
 
