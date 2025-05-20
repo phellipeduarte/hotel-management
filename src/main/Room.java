@@ -61,6 +61,14 @@ public class Room implements Serializable {
         return orders;
     }
 
+    public String getAc(){
+        if(Boolean.TRUE.equals(luxury)){
+            return "Yes";
+        } else {
+            return "No";
+        }
+    }
+
     public String getGuestsNames(){
         StringBuilder output = new StringBuilder();
 
@@ -75,7 +83,7 @@ public class Room implements Serializable {
 
     public String getRoomDetails(){
         String bed = "Room capacity: " + getCapacity() + "\n";
-        String ac = "AC: " + (getLuxury() ? "Yes" : "No") + "\n";
+        String ac = "AC: " + getAc() + "\n";
         String freeBreakfast = "Free breakfast: Yes\n";
         String chargeDay = "Charge per day: " + Utils.getValueLocalCurrency(getCharge()) + "\n";
         return bed + ac + freeBreakfast + chargeDay;
