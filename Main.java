@@ -5,584 +5,910 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
-class Food implements Serializable
-{
-    int itemno;
-    int quantity;   
-    float price;
-    
-    Food(int itemno,int quantity)
-    {
-        this.itemno=itemno;
-        this.quantity=quantity;
-        switch(itemno)
-        {
-            case 1:price=quantity*50;
-                break;
-            case 2:price=quantity*60;
-                break;
-            case 3:price=quantity*70;
-                break;
-            case 4:price=quantity*30;
-                break;
-        }
-    }
-}
-class Singleroom implements Serializable
-{
-    String name;
-    String contact;
-    String gender;   
-    ArrayList<Food> food =new ArrayList<>();
+// --- 1. Constantes e Enums ---
+final class HotelConstants {
+    public static final int LUXURY_DOUBLE_ROOM_PRICE = 4000;
+    public static final int DELUXE_DOUBLE_ROOM_PRICE = 3000;
+    public static final int LUXURY_SINGLE_ROOM_PRICE = 2200;
+    public static final int DELUXE_SINGLE_ROOM_PRICE = 1200;
 
-   
-    Singleroom()
-    {
-        this.name="";
-    }
-    Singleroom(String name,String contact,String gender)
-    {
-        this.name=name;
-        this.contact=contact;
-        this.gender=gender;
-    }
-}
-class Doubleroom extends Singleroom implements Serializable
-{ 
-    String name2;
-    String contact2;
-    String gender2;  
-    
-    Doubleroom()
-    {
-        this.name="";
-        this.name2="";
-    }
-    Doubleroom(String name,String contact,String gender,String name2,String contact2,String gender2)
-    {
-        this.name=name;
-        this.contact=contact;
-        this.gender=gender;
-        this.name2=name2;
-        this.contact2=contact2;
-        this.gender2=gender2;
-    }
-}
-class NotAvailable extends Exception
-{
-    @Override
-    public String toString()
-    {
-        return "Not Available !";
+    public static final int LUXURY_DOUBLE_ROOM_CAPACITY = 10;
+    public static final int DELUXE_DOUBLE_ROOM_CAPACITY = 20;
+    public static final int LUXURY_SINGLE_ROOM_CAPACITY = 10;
+    public static final int DELUXE_SINGLE_ROOM_CAPACITY = 20;
+
+    public static final String FILE_BACKUP = "backup";
+
+    private HotelConstants() {
+        // Restringe a instanciação
     }
 }
 
-class holder implements Serializable
-{
-    Doubleroom luxury_doublerrom[]=new Doubleroom[10]; //Luxury
-    Doubleroom deluxe_doublerrom[]=new Doubleroom[20]; //Deluxe
-    Singleroom luxury_singleerrom[]=new Singleroom[10]; //Luxury
-    Singleroom deluxe_singleerrom[]=new Singleroom[20]; //Deluxe
-}
+enum FoodItem {
+    SANDWICH(1, "Sandwich", 50),
+    PASTA(2, "Pasta", 60),
+    NOODLES(3, "Noodles", 70),
+    COKE(4, "Coke", 30);
 
-class Hotel
-{
-    static holder hotel_ob=new holder();
-    static Scanner sc = new Scanner(System.in);
-    static void CustDetails(int i,int rn)
-    {
-        String name, contact, gender;
-        String name2 = null, contact2 = null; 
-        String gender2="";
-        System.out.print("\nEnter customer name: ");
-        name = sc.next();
-        System.out.print("Enter contact number: ");
-        contact=sc.next();
-        System.out.print("Enter gender: ");
-        gender = sc.next();
-        if(i<3)
-        {
-        System.out.print("Enter second customer name: ");
-        name2 = sc.next();
-        System.out.print("Enter contact number: ");
-        contact2=sc.next();
-        System.out.print("Enter gender: ");
-        gender2 = sc.next();
-        }      
-        
-          switch (i) {
-            case 1:hotel_ob.luxury_doublerrom[rn]=new Doubleroom(name,contact,gender,name2,contact2,gender2);
-                break;
-            case 2:hotel_ob.deluxe_doublerrom[rn]=new Doubleroom(name,contact,gender,name2,contact2,gender2);
-                break;
-            case 3:hotel_ob.luxury_singleerrom[rn]=new Singleroom(name,contact,gender);
-                break;
-            case 4:hotel_ob.deluxe_singleerrom[rn]=new Singleroom(name,contact,gender);
-                break;
-            default:System.out.println("Wrong option");
-                break;
-        }
+    private final int itemNo;
+    private final String name;
+    private final float price;
+
+    FoodItem(int itemNo, String name, float price) {
+        this.itemNo = itemNo;
+        this.name = name;
+        this.price = price;
     }
-    
-    static void bookroom(int i)
-    {
-        int j;
-        int rn;
-        System.out.println("\nChoose room number from : ");
-        switch (i) {
-            case 1:
-                for(j=0;j<hotel_ob.luxury_doublerrom.length;j++)
-                {
-                    if(hotel_ob.luxury_doublerrom[j]==null)
-                    {
-                        System.out.print(j+1+",");
-                    }
-                }
-                System.out.print("\nEnter room number: ");
-                try{
-                rn=sc.nextInt();
-                rn--;
-                if(hotel_ob.luxury_doublerrom[rn]!=null)
-                    throw new NotAvailable();
-                CustDetails(i,rn);
-                }
-                catch(Exception e)
-                {
-                    System.out.println("Invalid Option");
-                    return;
-                }
-                break;
-            case 2:
-                 for(j=0;j<hotel_ob.deluxe_doublerrom.length;j++)
-                {
-                    if(hotel_ob.deluxe_doublerrom[j]==null)
-                    {
-                        System.out.print(j+11+",");
-                    }
-                }
-                System.out.print("\nEnter room number: ");
-                try{
-                rn=sc.nextInt();
-                rn=rn-11;
-                if(hotel_ob.deluxe_doublerrom[rn]!=null)
-                    throw new NotAvailable();
-                CustDetails(i,rn);
-                }
-                catch(Exception e)
-                {
-                    System.out.println("Invalid Option");
-                    return;
-                }
-                break;
-            case 3:
-                  for(j=0;j<hotel_ob.luxury_singleerrom.length;j++)
-                {
-                    if(hotel_ob.luxury_singleerrom[j]==null)
-                    {
-                        System.out.print(j+31+",");
-                    }
-                }
-                System.out.print("\nEnter room number: ");
-                try{
-                rn=sc.nextInt();
-                rn=rn-31;
-                if(hotel_ob.luxury_singleerrom[rn]!=null)
-                    throw new NotAvailable();
-                CustDetails(i,rn);
-                }
-                catch(Exception e)
-                {
-                    System.out.println("Invalid Option");
-                    return;
-                }
-                break;
-            case 4:
-                  for(j=0;j<hotel_ob.deluxe_singleerrom.length;j++)
-                {
-                    if(hotel_ob.deluxe_singleerrom[j]==null)
-                    {
-                        System.out.print(j+41+",");
-                    }
-                }
-                System.out.print("\nEnter room number: ");
-                try{
-                rn=sc.nextInt();
-                rn=rn-41;
-                if(hotel_ob.deluxe_singleerrom[rn]!=null)
-                    throw new NotAvailable();
-                CustDetails(i,rn);
-                }
-                catch(Exception e)
-                {
-                   System.out.println("Invalid Option");
-                    return;
-                }
-                break;
-            default:
-                System.out.println("Enter valid option");
-                break;
-        }
-        System.out.println("Room Booked");
+
+    public int getItemNo() {
+        return itemNo;
     }
-    
-    static void features(int i)
-    {
-        switch (i) {
-            case 1:System.out.println("Number of double beds : 1\nAC : Yes\nFree breakfast : Yes\nCharge per day:4000 ");
-                break;
-            case 2:System.out.println("Number of double beds : 1\nAC : No\nFree breakfast : Yes\nCharge per day:3000  ");
-                break;
-            case 3:System.out.println("Number of single beds : 1\nAC : Yes\nFree breakfast : Yes\nCharge per day:2200  ");
-                break;
-            case 4:System.out.println("Number of single beds : 1\nAC : No\nFree breakfast : Yes\nCharge per day:1200 ");
-                break;
-            default:
-                System.out.println("Enter valid option");
-                break;
-        }
+
+    public String getName() {
+        return name;
     }
-    
-    static void availability(int i)
-    {
-      int j,count=0;
-        switch (i) {
-            case 1:
-                for(j=0;j<10;j++)
-                {
-                    if(hotel_ob.luxury_doublerrom[j]==null)
-                        count++;
-                }
-                break;
-            case 2:
-                for(j=0;j<hotel_ob.deluxe_doublerrom.length;j++)
-                {
-                    if(hotel_ob.deluxe_doublerrom[j]==null)
-                        count++;
-                }
-                break;
-            case 3:
-                for(j=0;j<hotel_ob.luxury_singleerrom.length;j++)
-                {
-                    if(hotel_ob.luxury_singleerrom[j]==null)
-                        count++;
-                }
-                break;
-            case 4:
-                for(j=0;j<hotel_ob.deluxe_singleerrom.length;j++)
-                {
-                    if(hotel_ob.deluxe_singleerrom[j]==null)
-                        count++;
-                }
-                break;
-            default:
-                System.out.println("Enter valid option");
-                break;
-        }
-        System.out.println("Number of rooms available : "+count);
+
+    public float getPrice() {
+        return price;
     }
-    
-    static void bill(int rn,int rtype)
-    {
-        double amount=0;
-        String list[]={"Sandwich","Pasta","Noodles","Coke"};
-        System.out.println("\n*******");
-        System.out.println(" Bill:-");
-        System.out.println("*******");
-               
-        switch(rtype)
-        {
-            case 1:
-                amount+=4000;
-                    System.out.println("\nRoom Charge - "+4000);
-                    System.out.println("\n===============");
-                    System.out.println("Food Charges:- ");
-                    System.out.println("===============");
-                     System.out.println("Item   Quantity    Price");
-                    System.out.println("-------------------------");
-                    for(Food obb:hotel_ob.luxury_doublerrom[rn].food)
-                    {
-                        amount+=obb.price;
-                        String format = "%-10s%-10s%-10s%n";
-                        System.out.printf(format,list[obb.itemno-1],obb.quantity,obb.price );
-                    }
-                    
-                break;
-            case 2:amount+=3000;
-                    System.out.println("Room Charge - "+3000);
-                    System.out.println("\nFood Charges:- ");
-                    System.out.println("===============");
-                     System.out.println("Item   Quantity    Price");
-                    System.out.println("-------------------------");
-                    for(Food obb:hotel_ob.deluxe_doublerrom[rn].food)
-                    {
-                        amount+=obb.price;
-                        String format = "%-10s%-10s%-10s%n";
-                        System.out.printf(format,list[obb.itemno-1],obb.quantity,obb.price );
-                    }
-                break;
-            case 3:amount+=2200;
-                    System.out.println("Room Charge - "+2200);
-                    System.out.println("\nFood Charges:- ");
-                    System.out.println("===============");
-                    System.out.println("Item   Quantity    Price");
-                    System.out.println("-------------------------");
-                    for(Food obb:hotel_ob.luxury_singleerrom[rn].food)
-                    {
-                        amount+=obb.price;
-                        String format = "%-10s%-10s%-10s%n";
-                        System.out.printf(format,list[obb.itemno-1],obb.quantity,obb.price );
-                    }
-                break;
-            case 4:amount+=1200;
-                    System.out.println("Room Charge - "+1200);
-                    System.out.println("\nFood Charges:- ");
-                    System.out.println("===============");
-                    System.out.println("Item   Quantity    Price");
-                    System.out.println("-------------------------");
-                    for(Food obb: hotel_ob.deluxe_singleerrom[rn].food)
-                    {
-                        amount+=obb.price;
-                        String format = "%-10s%-10s%-10s%n";
-                        System.out.printf(format,list[obb.itemno-1],obb.quantity,obb.price );
-                    }
-                break;
-            default:
-                System.out.println("Not valid");
-        }
-        System.out.println("\nTotal Amount- "+amount);
-    }
-    
-    static void deallocate(int rn,int rtype)
-    {
-        int j;
-        char w;
-        switch (rtype) {
-            case 1:               
-                if(hotel_ob.luxury_doublerrom[rn]!=null)
-                    System.out.println("Room used by "+hotel_ob.luxury_doublerrom[rn].name);                
-                else 
-                {    
-                    System.out.println("Empty Already");
-                        return;
-                }
-                System.out.println("Do you want to checkout ?(y/n)");
-                 w=sc.next().charAt(0);
-                if(w=='y'||w=='Y')
-                {
-                    bill(rn,rtype);
-                    hotel_ob.luxury_doublerrom[rn]=null;
-                    System.out.println("Deallocated succesfully");
-                }
-                
-                break;
-            case 2:
-                if(hotel_ob.deluxe_doublerrom[rn]!=null)
-                    System.out.println("Room used by "+hotel_ob.deluxe_doublerrom[rn].name);                
-                else 
-                {    
-                    System.out.println("Empty Already");
-                        return;
-                }
-                System.out.println(" Do you want to checkout ?(y/n)");
-                 w=sc.next().charAt(0);
-                if(w=='y'||w=='Y')
-                {
-                    bill(rn,rtype);
-                    hotel_ob.deluxe_doublerrom[rn]=null;
-                    System.out.println("Deallocated succesfully");
-                }
-                 
-                break;
-            case 3:
-                if(hotel_ob.luxury_singleerrom[rn]!=null)
-                    System.out.println("Room used by "+hotel_ob.luxury_singleerrom[rn].name);                
-                else 
-                 {    
-                    System.out.println("Empty Already");
-                        return;
-                }
-                System.out.println(" Do you want to checkout ? (y/n)");
-                w=sc.next().charAt(0);
-                if(w=='y'||w=='Y')
-                {
-                    bill(rn,rtype);
-                    hotel_ob.luxury_singleerrom[rn]=null;
-                    System.out.println("Deallocated succesfully");
-                }
-                
-                break;
-            case 4:
-                if(hotel_ob.deluxe_singleerrom[rn]!=null)
-                    System.out.println("Room used by "+hotel_ob.deluxe_singleerrom[rn].name);                
-                else 
-                 {    
-                    System.out.println("Empty Already");
-                        return;
-                }
-                System.out.println(" Do you want to checkout ? (y/n)");
-                 w=sc.next().charAt(0);
-                if(w=='y'||w=='Y')
-                {
-                    bill(rn,rtype);
-                    hotel_ob.deluxe_singleerrom[rn]=null;
-                    System.out.println("Deallocated succesfully");
-                }
-                break;
-            default:
-                System.out.println("\nEnter valid option : ");
-                break;
-        }
-    }
-    
-    static void order(int rn,int rtype)
-    {
-        int i,q;
-        char wish;
-         try{
-             System.out.println("\n==========\n   Menu:  \n==========\n\n1.Sandwich\tRs.50\n2.Pasta\t\tRs.60\n3.Noodles\tRs.70\n4.Coke\t\tRs.30\n");
-        do
-        {
-            i = sc.nextInt();
-            System.out.print("Quantity- ");
-            q=sc.nextInt();
-           
-              switch(rtype){
-            case 1: hotel_ob.luxury_doublerrom[rn].food.add(new Food(i,q));
-                break;
-            case 2: hotel_ob.deluxe_doublerrom[rn].food.add(new Food(i,q));
-                break;
-            case 3: hotel_ob.luxury_singleerrom[rn].food.add(new Food(i,q));
-                break;
-            case 4: hotel_ob.deluxe_singleerrom[rn].food.add(new Food(i,q));
-                break;                                                 
-        }
-              System.out.println("Do you want to order anything else ? (y/n)");
-              wish=sc.next().charAt(0); 
-        }while(wish=='y'||wish=='Y');  
-        }
-         catch(NullPointerException e)
-            {
-                System.out.println("\nRoom not booked");
+
+    public static FoodItem fromItemNo(int itemNo) {
+        for (FoodItem item : FoodItem.values()) {
+            if (item.getItemNo() == itemNo) {
+                return item;
             }
-         catch(Exception e)
-         {
-             System.out.println("Cannot be done");
-         }
+        }
+        throw new IllegalArgumentException("Número de item de comida inválido: " + itemNo);
     }
 }
 
+enum RoomType {
+    LUXURY_DOUBLE(1, "Luxury Double Room"),
+    DELUXE_DOUBLE(2, "Deluxe Double Room"),
+    LUXURY_SINGLE(3, "Luxury Single Room"),
+    DELUXE_SINGLE(4, "Deluxe Single Room");
 
-class write implements Runnable
-{
-    holder hotel_ob;
-    write(holder hotel_ob)
-    {
-        this.hotel_ob=hotel_ob;
+    private final int typeCode;
+    private final String description;
+
+    RoomType(int typeCode, String description) {
+        this.typeCode = typeCode;
+        this.description = description;
     }
+
+    public int getTypeCode() {
+        return typeCode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public static RoomType fromTypeCode(int typeCode) {
+        for (RoomType type : RoomType.values()) {
+            if (type.getTypeCode() == typeCode) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Código de tipo de quarto inválido: " + typeCode);
+    }
+}
+
+// --- 2. Food Class Improvements ---
+class Food implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private FoodItem item;
+    private int quantity;
+    private float price;
+
+    public Food(FoodItem item, int quantity) {
+        this.item = item;
+        this.quantity = quantity;
+        this.price = item.getPrice() * quantity;
+    }
+
+    public FoodItem getItem() {
+        return item;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+}
+
+// --- 3. Room Hierarchy e Customer Class ---
+class Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private String contact;
+    private String gender;
+
+    public Customer(String name, String contact, String gender) {
+        this.name = name;
+        this.contact = contact;
+        this.gender = gender;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+}
+
+abstract class Room implements Serializable {
+    private static final long serialVersionUID = 1L;
+    protected List<Food> food;
+    protected boolean isBooked;
+    protected int price;
+
+    public Room() {
+        this.food = new ArrayList<>();
+        this.isBooked = false;
+    }
+
+    public abstract String getRoomDetails();
+    public abstract int getRoomPrice();
+    public abstract void addFood(Food foodItem);
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void book() {
+        this.isBooked = true;
+    }
+
+    public void checkout() {
+        this.isBooked = false;
+        this.food.clear();
+    }
+
+    public List<Food> getFood() {
+        return food;
+    }
+}
+
+class SingleRoom extends Room implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private Customer primaryGuest;
+
+    public SingleRoom() {
+        super();
+    }
+
+    public SingleRoom(Customer primaryGuest) {
+        this();
+        this.primaryGuest = primaryGuest;
+        this.isBooked = true;
+    }
+
+    public void setPrimaryGuest(Customer primaryGuest) {
+        this.primaryGuest = primaryGuest;
+        this.isBooked = true;
+    }
+
+    public Customer getPrimaryGuest() {
+        return primaryGuest;
+    }
+
+    @Override
+    public String getRoomDetails() {
+        return "Número de camas de solteiro : 1\nAC : Sim\nCafé da manhã grátis : Sim\nPreço por dia: " + getRoomPrice();
+    }
+
+    @Override
+    public int getRoomPrice() {
+        return HotelConstants.LUXURY_SINGLE_ROOM_PRICE; // Preço base, será sobrescrito por tipos específicos
+    }
+
+    @Override
+    public void addFood(Food foodItem) {
+        this.food.add(foodItem);
+    }
+}
+
+class LuxurySingleRoom extends SingleRoom implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    public LuxurySingleRoom() {
+        super();
+        this.price = HotelConstants.LUXURY_SINGLE_ROOM_PRICE;
+    }
+
+    public LuxurySingleRoom(Customer primaryGuest) {
+        super(primaryGuest);
+        this.price = HotelConstants.LUXURY_SINGLE_ROOM_PRICE;
+    }
+
+    @Override
+    public String getRoomDetails() {
+        return "Número de camas de solteiro : 1\nAC : Sim\nCafé da manhã grátis : Sim\nPreço por dia:" + HotelConstants.LUXURY_SINGLE_ROOM_PRICE;
+    }
+
+    @Override
+    public int getRoomPrice() {
+        return HotelConstants.LUXURY_SINGLE_ROOM_PRICE;
+    }
+}
+
+class DeluxeSingleRoom extends SingleRoom implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    public DeluxeSingleRoom() {
+        super();
+        this.price = HotelConstants.DELUXE_SINGLE_ROOM_PRICE;
+    }
+
+    public DeluxeSingleRoom(Customer primaryGuest) {
+        super(primaryGuest);
+        this.price = HotelConstants.DELUXE_SINGLE_ROOM_PRICE;
+    }
+
+    @Override
+    public String getRoomDetails() {
+        return "Número de camas de solteiro : 1\nAC : Não\nCafé da manhã grátis : Sim\nPreço por dia:" + HotelConstants.DELUXE_SINGLE_ROOM_PRICE;
+    }
+
+    @Override
+    public int getRoomPrice() {
+        return HotelConstants.DELUXE_SINGLE_ROOM_PRICE;
+    }
+}
+
+class DoubleRoom extends Room implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private Customer primaryGuest;
+    private Customer secondGuest;
+
+    public DoubleRoom() {
+        super();
+    }
+
+    public DoubleRoom(Customer primaryGuest, Customer secondGuest) {
+        this();
+        this.primaryGuest = primaryGuest;
+        this.secondGuest = secondGuest;
+        this.isBooked = true;
+    }
+
+    public void setGuests(Customer primaryGuest, Customer secondGuest) {
+        this.primaryGuest = primaryGuest;
+        this.secondGuest = secondGuest;
+        this.isBooked = true;
+    }
+
+    public Customer getPrimaryGuest() {
+        return primaryGuest;
+    }
+
+    public Customer getSecondGuest() {
+        return secondGuest;
+    }
+
+    @Override
+    public String getRoomDetails() {
+        return "Número de camas de casal : 1\nAC : Sim\nCafé da manhã grátis : Sim\nPreço por dia: " + getRoomPrice();
+    }
+
+    @Override
+    public int getRoomPrice() {
+        return HotelConstants.LUXURY_DOUBLE_ROOM_PRICE; // Preço base, será sobrescrito por tipos específicos
+    }
+
+    @Override
+    public void addFood(Food foodItem) {
+        this.food.add(foodItem);
+    }
+}
+
+class LuxuryDoubleRoom extends DoubleRoom implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    public LuxuryDoubleRoom() {
+        super();
+        this.price = HotelConstants.LUXURY_DOUBLE_ROOM_PRICE;
+    }
+
+    public LuxuryDoubleRoom(Customer primaryGuest, Customer secondGuest) {
+        super(primaryGuest, secondGuest);
+        this.price = HotelConstants.LUXURY_DOUBLE_ROOM_PRICE;
+    }
+
+    @Override
+    public String getRoomDetails() {
+        return "Número de camas de casal : 1\nAC : Sim\nCafé da manhã grátis : Sim\nPreço por dia:" + HotelConstants.LUXURY_DOUBLE_ROOM_PRICE;
+    }
+
+    @Override
+    public int getRoomPrice() {
+        return HotelConstants.LUXURY_DOUBLE_ROOM_PRICE;
+    }
+}
+
+class DeluxeDoubleRoom extends DoubleRoom implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    public DeluxeDoubleRoom() {
+        super();
+        this.price = HotelConstants.DELUXE_DOUBLE_ROOM_PRICE;
+    }
+
+    public DeluxeDoubleRoom(Customer primaryGuest, Customer secondGuest) {
+        super(primaryGuest, secondGuest);
+        this.price = HotelConstants.DELUXE_DOUBLE_ROOM_PRICE;
+    }
+
+    @Override
+    public String getRoomDetails() {
+        return "Número de camas de casal : 1\nAC : Não\nCafé da manhã grátis : Sim\nPreço por dia:" + HotelConstants.DELUXE_DOUBLE_ROOM_PRICE;
+    }
+
+    @Override
+    public int getRoomPrice() {
+        return HotelConstants.DELUXE_DOUBLE_ROOM_PRICE;
+    }
+}
+
+// --- 4. NotAvailable Exception ---
+class NotAvailableException extends Exception {
+    private static final long serialVersionUID = 1L;
+
+    public NotAvailableException() {
+        super("Não disponível!");
+    }
+
+    public NotAvailableException(String message) {
+        super(message);
+    }
+}
+
+// --- 5. HotelRoomRegistry (formerly holder) ---
+class HotelRoomRegistry implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private List<LuxuryDoubleRoom> luxuryDoubleRooms;
+    private List<DeluxeDoubleRoom> deluxeDoubleRooms;
+    private List<LuxurySingleRoom> luxurySingleRooms;
+    private List<DeluxeSingleRoom> deluxeSingleRooms;
+
+    public HotelRoomRegistry() {
+        luxuryDoubleRooms = new ArrayList<>(HotelConstants.LUXURY_DOUBLE_ROOM_CAPACITY);
+        for (int i = 0; i < HotelConstants.LUXURY_DOUBLE_ROOM_CAPACITY; i++) {
+            luxuryDoubleRooms.add(null);
+        }
+
+        deluxeDoubleRooms = new ArrayList<>(HotelConstants.DELUXE_DOUBLE_ROOM_CAPACITY);
+        for (int i = 0; i < HotelConstants.DELUXE_DOUBLE_ROOM_CAPACITY; i++) {
+            deluxeDoubleRooms.add(null);
+        }
+
+        luxurySingleRooms = new ArrayList<>(HotelConstants.LUXURY_SINGLE_ROOM_CAPACITY);
+        for (int i = 0; i < HotelConstants.LUXURY_SINGLE_ROOM_CAPACITY; i++) {
+            luxurySingleRooms.add(null);
+        }
+
+        deluxeSingleRooms = new ArrayList<>(HotelConstants.DELUXE_SINGLE_ROOM_CAPACITY);
+        for (int i = 0; i < HotelConstants.DELUXE_SINGLE_ROOM_CAPACITY; i++) {
+            deluxeSingleRooms.add(null);
+        }
+    }
+
+    public List<LuxuryDoubleRoom> getLuxuryDoubleRooms() {
+        return luxuryDoubleRooms;
+    }
+
+    public List<DeluxeDoubleRoom> getDeluxeDoubleRooms() {
+        return deluxeDoubleRooms;
+    }
+
+    public List<LuxurySingleRoom> getLuxurySingleRooms() {
+        return luxurySingleRooms;
+    }
+
+    public List<DeluxeSingleRoom> getDeluxeSingleRooms() {
+        return deluxeSingleRooms;
+    }
+
+    public Room getRoom(RoomType roomType, int index) {
+        switch (roomType) {
+            case LUXURY_DOUBLE:
+                return luxuryDoubleRooms.get(index);
+            case DELUXE_DOUBLE:
+                return deluxeDoubleRooms.get(index);
+            case LUXURY_SINGLE:
+                return luxurySingleRooms.get(index);
+            case DELUXE_SINGLE:
+                return deluxeSingleRooms.get(index);
+            default:
+                throw new IllegalArgumentException("Tipo de quarto inválido: " + roomType);
+        }
+    }
+
+    public void setRoom(RoomType roomType, int index, Room room) {
+        switch (roomType) {
+            case LUXURY_DOUBLE:
+                luxuryDoubleRooms.set(index, (LuxuryDoubleRoom) room);
+                break;
+            case DELUXE_DOUBLE:
+                deluxeDoubleRooms.set(index, (DeluxeDoubleRoom) room);
+                break;
+            case LUXURY_SINGLE:
+                luxurySingleRooms.set(index, (LuxurySingleRoom) room);
+                break;
+            case DELUXE_SINGLE:
+                deluxeSingleRooms.set(index, (DeluxeSingleRoom) room);
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de quarto inválido: " + roomType);
+        }
+    }
+}
+
+// --- 6. Hotel Class Refinements ---
+class Hotel {
+    private HotelRoomRegistry roomRegistry;
+    private Scanner scanner;
+
+    public Hotel(HotelRoomRegistry roomRegistry, Scanner scanner) {
+        this.roomRegistry = roomRegistry;
+        this.scanner = scanner;
+    }
+
+    private Customer getCustomerDetails() {
+        System.out.print("\nDigite o nome do cliente: ");
+        String name = scanner.next();
+        System.out.print("Digite o número de contato: ");
+        String contact = scanner.next();
+        System.out.print("Digite o gênero: ");
+        String gender = scanner.next();
+        return new Customer(name, contact, gender);
+    }
+
+    private void bookRoomInternal(RoomType roomType, int roomIndex) throws NotAvailableException {
+        Room room = roomRegistry.getRoom(roomType, roomIndex);
+
+        if (room != null && room.isBooked()) {
+            throw new NotAvailableException("Quarto já reservado!");
+        }
+
+        Customer primaryGuest = getCustomerDetails();
+        if (roomType == RoomType.LUXURY_DOUBLE || roomType == RoomType.DELUXE_DOUBLE) {
+            System.out.print("Digite o nome do segundo cliente: ");
+            String name2 = scanner.next();
+            System.out.print("Digite o número de contato: ");
+            String contact2 = scanner.next();
+            System.out.print("Digite o gênero: ");
+            String gender2 = scanner.next();
+            Customer secondGuest = new Customer(name2, contact2, gender2);
+
+            if (roomType == RoomType.LUXURY_DOUBLE) {
+                roomRegistry.setRoom(roomType, roomIndex, new LuxuryDoubleRoom(primaryGuest, secondGuest));
+            } else {
+                roomRegistry.setRoom(roomType, roomIndex, new DeluxeDoubleRoom(primaryGuest, secondGuest));
+            }
+        } else {
+            if (roomType == RoomType.LUXURY_SINGLE) {
+                roomRegistry.setRoom(roomType, roomIndex, new LuxurySingleRoom(primaryGuest));
+            } else {
+                roomRegistry.setRoom(roomType, roomIndex, new DeluxeSingleRoom(primaryGuest));
+            }
+        }
+        System.out.println("Quarto reservado com sucesso!");
+    }
+
+    public void bookRoom(RoomType roomType) {
+        System.out.println("\nEscolha o número do quarto entre os quartos disponíveis:");
+        List<? extends Room> rooms;
+        int offset;
+
+        switch (roomType) {
+            case LUXURY_DOUBLE:
+                rooms = roomRegistry.getLuxuryDoubleRooms();
+                offset = 1; // Números de quartos 1-10
+                break;
+            case DELUXE_DOUBLE:
+                rooms = roomRegistry.getDeluxeDoubleRooms();
+                offset = 11; // Números de quartos 11-30
+                break;
+            case LUXURY_SINGLE:
+                rooms = roomRegistry.getLuxurySingleRooms();
+                offset = 31; // Números de quartos 31-40
+                break;
+            case DELUXE_SINGLE:
+                rooms = roomRegistry.getDeluxeSingleRooms();
+                offset = 41; // Números de quartos 41-60
+                break;
+            default:
+                System.out.println("Tipo de quarto inválido.");
+                return;
+        }
+
+        for (int j = 0; j < rooms.size(); j++) {
+            if (rooms.get(j) == null || !rooms.get(j).isBooked()) {
+                System.out.print((j + offset) + ", ");
+            }
+        }
+        System.out.print("\nDigite o número do quarto: ");
+        try {
+            int roomNumber = scanner.nextInt();
+            int roomIndex = roomNumber - offset;
+
+            if (roomIndex < 0 || roomIndex >= rooms.size()) {
+                throw new NotAvailableException("Número de quarto inválido para o tipo selecionado.");
+            }
+
+            bookRoomInternal(roomType, roomIndex);
+
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada inválida. Por favor, digite um número.");
+            scanner.next(); // Consumir a entrada inválida
+        } catch (NotAvailableException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+        }
+    }
+
+    public void displayFeatures(RoomType roomType) {
+        switch (roomType) {
+            case LUXURY_DOUBLE:
+                System.out.println("Número de camas de casal : 1\nAC : Sim\nCafé da manhã grátis : Sim\nPreço por dia: " + HotelConstants.LUXURY_DOUBLE_ROOM_PRICE);
+                break;
+            case DELUXE_DOUBLE:
+                System.out.println("Número de camas de casal : 1\nAC : Não\nCafé da manhã grátis : Sim\nPreço por dia: " + HotelConstants.DELUXE_DOUBLE_ROOM_PRICE);
+                break;
+            case LUXURY_SINGLE:
+                System.out.println("Número de camas de solteiro : 1\nAC : Sim\nCafé da manhã grátis : Sim\nPreço por dia: " + HotelConstants.LUXURY_SINGLE_ROOM_PRICE);
+                break;
+            case DELUXE_SINGLE:
+                System.out.println("Número de camas de solteiro : 1\nAC : Não\nCafé da manhã grátis : Sim\nPreço por dia: " + HotelConstants.DELUXE_SINGLE_ROOM_PRICE);
+                break;
+            default:
+                System.out.println("Digite uma opção válida");
+                break;
+        }
+    }
+
+    public void checkAvailability(RoomType roomType) {
+        int count = 0;
+        List<? extends Room> rooms;
+
+        switch (roomType) {
+            case LUXURY_DOUBLE:
+                rooms = roomRegistry.getLuxuryDoubleRooms();
+                break;
+            case DELUXE_DOUBLE:
+                rooms = roomRegistry.getDeluxeDoubleRooms();
+                break;
+            case LUXURY_SINGLE:
+                rooms = roomRegistry.getLuxurySingleRooms();
+                break;
+            case DELUXE_SINGLE:
+                rooms = roomRegistry.getDeluxeSingleRooms();
+                break;
+            default:
+                System.out.println("Digite uma opção válida");
+                return;
+        }
+
+        for (Room room : rooms) {
+            if (room == null || !room.isBooked()) {
+                count++;
+            }
+        }
+        System.out.println("Número de quartos disponíveis : " + count);
+    }
+
+    public void generateBill(int roomNumber, RoomType roomType) {
+        Room room = getRoomFromNumber(roomNumber);
+
+        if (room == null || !room.isBooked()) {
+            System.out.println("Quarto não encontrado ou não reservado.");
+            return;
+        }
+
+        double totalAmount = room.getRoomPrice();
+        System.out.println("\n*******");
+        System.out.println(" Conta:-");
+        System.out.println("*******");
+        System.out.println("\nCusto do Quarto - " + room.getRoomPrice());
+        System.out.println("\n===============");
+        System.out.println("Custos de Alimentação:- ");
+        System.out.println("===============");
+        System.out.println("Item        Quantidade   Preço");
+        System.out.println("-------------------------");
+
+        for (Food foodItem : room.getFood()) {
+            totalAmount += foodItem.getPrice();
+            String format = "%-10s%-10s%-10s%n";
+            System.out.printf(format, foodItem.getItem().getName(), foodItem.getQuantity(), foodItem.getPrice());
+        }
+        System.out.println("\nValor Total - " + totalAmount);
+    }
+
+    public void checkoutRoom(int roomNumber) {
+        RoomType roomType = getRoomTypeFromNumber(roomNumber);
+        if (roomType == null) {
+            System.out.println("O quarto não existe.");
+            return;
+        }
+
+        int roomIndex;
+        List<? extends Room> rooms;
+        String roomUserName = "N/A";
+
+        switch (roomType) {
+            case LUXURY_DOUBLE:
+                roomIndex = roomNumber - 1;
+                rooms = roomRegistry.getLuxuryDoubleRooms();
+                if (roomIndex >= 0 && roomIndex < rooms.size() && rooms.get(roomIndex) != null) {
+                    DoubleRoom dr = (DoubleRoom) rooms.get(roomIndex);
+                    if (dr.getPrimaryGuest() != null) roomUserName = dr.getPrimaryGuest().getName();
+                }
+                break;
+            case DELUXE_DOUBLE:
+                roomIndex = roomNumber - 11;
+                rooms = roomRegistry.getDeluxeDoubleRooms();
+                if (roomIndex >= 0 && roomIndex < rooms.size() && rooms.get(roomIndex) != null) {
+                    DoubleRoom dr = (DoubleRoom) rooms.get(roomIndex);
+                    if (dr.getPrimaryGuest() != null) roomUserName = dr.getPrimaryGuest().getName();
+                }
+                break;
+            case LUXURY_SINGLE:
+                roomIndex = roomNumber - 31;
+                rooms = roomRegistry.getLuxurySingleRooms();
+                if (roomIndex >= 0 && roomIndex < rooms.size() && rooms.get(roomIndex) != null) {
+                    SingleRoom sr = (SingleRoom) rooms.get(roomIndex);
+                    if (sr.getPrimaryGuest() != null) roomUserName = sr.getPrimaryGuest().getName();
+                }
+                break;
+            case DELUXE_SINGLE:
+                roomIndex = roomNumber - 41;
+                rooms = roomRegistry.getDeluxeSingleRooms();
+                if (roomIndex >= 0 && roomIndex < rooms.size() && rooms.get(roomIndex) != null) {
+                    SingleRoom sr = (SingleRoom) rooms.get(roomIndex);
+                    if (sr.getPrimaryGuest() != null) roomUserName = sr.getPrimaryGuest().getName();
+                }
+                break;
+            default:
+                System.out.println("Tipo de quarto inválido para checkout.");
+                return;
+        }
+
+        Room room = roomRegistry.getRoom(roomType, roomIndex);
+        if (room == null || !room.isBooked()) {
+            System.out.println("Quarto vazio ou não reservado.");
+            return;
+        }
+
+        System.out.println("Quarto usado por " + roomUserName);
+        System.out.println("Deseja fazer o checkout? (s/n)");
+        char wish = scanner.next().charAt(0);
+        if (wish == 's' || wish == 'S') {
+            generateBill(roomNumber, roomType);
+            room.checkout();
+            roomRegistry.setRoom(roomType, roomIndex, null);
+            System.out.println("Desalocado com sucesso!");
+        }
+    }
+
+    public void orderFood(int roomNumber) {
+        Room room = getRoomFromNumber(roomNumber);
+
+        if (room == null || !room.isBooked()) {
+            System.out.println("\nQuarto não reservado ou não existe.");
+            return;
+        }
+
+        System.out.println("\n==========\n    Menu: \n==========\n\n1.Sandwich\tRs." + FoodItem.SANDWICH.getPrice() +
+                "\n2.Pasta\t\tRs." + FoodItem.PASTA.getPrice() +
+                "\n3.Noodles\tRs." + FoodItem.NOODLES.getPrice() +
+                "\n4.Coke\t\tRs." + FoodItem.COKE.getPrice() + "\n");
+        char wish;
+        do {
+            try {
+                System.out.print("Digite o número do item: ");
+                int itemNo = scanner.nextInt();
+                FoodItem foodItem = FoodItem.fromItemNo(itemNo);
+
+                System.out.print("Quantidade: ");
+                int quantity = scanner.nextInt();
+
+                room.addFood(new Food(foodItem, quantity));
+                System.out.println("Item adicionado ao pedido.");
+
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, digite um número para item e quantidade.");
+                scanner.next();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro ao pedir comida: " + e.getMessage());
+            }
+            System.out.println("Deseja pedir mais alguma coisa? (s/n)");
+            wish = scanner.next().charAt(0);
+        } while (wish == 's' || wish == 'S');
+    }
+
+    private Room getRoomFromNumber(int roomNumber) {
+        if (roomNumber > 60 || roomNumber <= 0) {
+            return null;
+        } else if (roomNumber > 40) { // Deluxe Single
+            return roomRegistry.getDeluxeSingleRooms().get(roomNumber - 41);
+        } else if (roomNumber > 30) { // Luxury Single
+            return roomRegistry.getLuxurySingleRooms().get(roomNumber - 31);
+        } else if (roomNumber > 10) { // Deluxe Double
+            return roomRegistry.getDeluxeDoubleRooms().get(roomNumber - 11);
+        } else { // Luxury Double
+            return roomRegistry.getLuxuryDoubleRooms().get(roomNumber - 1);
+        }
+    }
+
+    private RoomType getRoomTypeFromNumber(int roomNumber) {
+        if (roomNumber > 60 || roomNumber <= 0) {
+            return null;
+        } else if (roomNumber > 40) {
+            return RoomType.DELUXE_SINGLE;
+        } else if (roomNumber > 30) {
+            return RoomType.LUXURY_SINGLE;
+        } else if (roomNumber > 10) {
+            return RoomType.DELUXE_DOUBLE;
+        } else {
+            return RoomType.LUXURY_DOUBLE;
+        }
+    }
+}
+
+// --- 7. HotelDataWriter (formerly write) ---
+class HotelDataWriter implements Runnable {
+    private HotelRoomRegistry roomRegistry;
+
+    public HotelDataWriter(HotelRoomRegistry roomRegistry) {
+        this.roomRegistry = roomRegistry;
+    }
+
     @Override
     public void run() {
-          try{
-        FileOutputStream fout=new FileOutputStream("backup");
-        ObjectOutputStream oos=new ObjectOutputStream(fout);
-        oos.writeObject(hotel_ob);
+        try (FileOutputStream fout = new FileOutputStream(HotelConstants.FILE_BACKUP);
+             ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+            oos.writeObject(roomRegistry);
+            System.out.println("Dados do hotel salvos com sucesso.");
+        } catch (Exception e) {
+            System.err.println("Erro ao escrever dados do hotel: " + e.getMessage());
         }
-        catch(Exception e)
-        {
-            System.out.println("Error in writing "+e);
-        }         
-        
     }
-    
 }
 
+// --- 8. Main Class ---
 public class Main {
-    public static void main(String[] args){
-        
-        try
-        {           
-        File f = new File("backup");
-        if(f.exists())
-        {
-            FileInputStream fin=new FileInputStream(f);
-            ObjectInputStream ois=new ObjectInputStream(fin);
-            Hotel.hotel_ob=(holder)ois.readObject();
-        }
-        Scanner sc = new Scanner(System.in);
-        int ch,ch2;
-        char wish;
-        x:
-        do{
+    public static void main(String[] args) {
+        HotelRoomRegistry hotelRoomRegistry = new HotelRoomRegistry();
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\nEnter your choice :\n1.Display room details\n2.Display room availability \n3.Book\n4.Order food\n5.Checkout\n6.Exit\n");
-        ch = sc.nextInt();
-        switch(ch){
-            case 1: System.out.println("\nChoose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room \n4.Deluxe Single Room\n");
-                    ch2 = sc.nextInt();
-                    Hotel.features(ch2);
-                break;
-            case 2:System.out.println("\nChoose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room\n4.Deluxe Single Room\n");
-                     ch2 = sc.nextInt();
-                     Hotel.availability(ch2);
-                break;
-            case 3:System.out.println("\nChoose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room\n4.Deluxe Single Room\n");
-                     ch2 = sc.nextInt();
-                     Hotel.bookroom(ch2);                     
-                break;
-            case 4:
-                 System.out.print("Room Number -");
-                     ch2 = sc.nextInt();
-                     if(ch2>60)
-                         System.out.println("Room doesn't exist");
-                     else if(ch2>40)
-                         Hotel.order(ch2-41,4);
-                     else if(ch2>30)
-                         Hotel.order(ch2-31,3);
-                     else if(ch2>10)
-                         Hotel.order(ch2-11,2);
-                     else if(ch2>0)
-                         Hotel.order(ch2-1,1);
-                     else
-                         System.out.println("Room doesn't exist");
-                     break;
-            case 5:                 
-                System.out.print("Room Number -");
-                     ch2 = sc.nextInt();
-                     if(ch2>60)
-                         System.out.println("Room doesn't exist");
-                     else if(ch2>40)
-                         Hotel.deallocate(ch2-41,4);
-                     else if(ch2>30)
-                         Hotel.deallocate(ch2-31,3);
-                     else if(ch2>10)
-                         Hotel.deallocate(ch2-11,2);
-                     else if(ch2>0)
-                         Hotel.deallocate(ch2-1,1);
-                     else
-                         System.out.println("Room doesn't exist");
-                     break;
-            case 6:break x;
-                
+        try {
+            File f = new File(HotelConstants.FILE_BACKUP);
+            if (f.exists()) {
+                try (FileInputStream fin = new FileInputStream(f);
+                     ObjectInputStream ois = new ObjectInputStream(fin)) {
+                    hotelRoomRegistry = (HotelRoomRegistry) ois.readObject();
+                    System.out.println("Dados do hotel carregados do backup.");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar dados do hotel do backup: " + e.getMessage());
         }
-           
-            System.out.println("\nContinue : (y/n)");
-            wish=sc.next().charAt(0); 
-            if(!(wish=='y'||wish=='Y'||wish=='n'||wish=='N'))
-            {
-                System.out.println("Invalid Option");
-                System.out.println("\nContinue : (y/n)");
-                wish=sc.next().charAt(0); 
+
+        Hotel hotel = new Hotel(hotelRoomRegistry, scanner);
+
+        int choice;
+        char continueChoice;
+        do {
+            System.out.println("\n--- Sistema de Gerenciamento de Hotéis ---");
+            System.out.println("1. Exibir detalhes do quarto");
+            System.out.println("2. Exibir disponibilidade do quarto");
+            System.out.println("3. Reservar um quarto");
+            System.out.println("4. Pedir comida");
+            System.out.println("5. Checkout");
+            System.out.println("6. Sair");
+            System.out.print("Digite sua escolha: ");
+
+            try {
+                choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("\nEscolha o tipo de quarto:");
+                        displayRoomTypeOptions();
+                        int roomTypeChoice = scanner.nextInt();
+                        hotel.displayFeatures(RoomType.fromTypeCode(roomTypeChoice));
+                        break;
+                    case 2:
+                        System.out.println("\nEscolha o tipo de quarto:");
+                        displayRoomTypeOptions();
+                        roomTypeChoice = scanner.nextInt();
+                        hotel.checkAvailability(RoomType.fromTypeCode(roomTypeChoice));
+                        break;
+                    case 3:
+                        System.out.println("\nEscolha o tipo de quarto:");
+                        displayRoomTypeOptions();
+                        roomTypeChoice = scanner.nextInt();
+                        hotel.bookRoom(RoomType.fromTypeCode(roomTypeChoice));
+                        break;
+                    case 4:
+                        System.out.print("Digite o número do quarto: ");
+                        int roomNumber = scanner.nextInt();
+                        hotel.orderFood(roomNumber);
+                        break;
+                    case 5:
+                        System.out.print("Digite o número do quarto: ");
+                        roomNumber = scanner.nextInt();
+                        hotel.checkoutRoom(roomNumber);
+                        break;
+                    case 6:
+                        System.out.println("Saindo do aplicativo. Salvando dados...");
+                        break;
+                    default:
+                        System.out.println("Escolha inválida. Por favor, digite um número entre 1 e 6.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, digite um número.");
+                scanner.next();
+                choice = 0;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                choice = 0;
             }
-            
-        }while(wish=='y'||wish=='Y');    
-        
-        Thread t=new Thread(new write(Hotel.hotel_ob));
+
+            if (choice != 6) {
+                System.out.println("\nContinuar? (s/n)");
+                continueChoice = scanner.next().charAt(0);
+                while (!isValidYesNo(continueChoice)) {
+                    System.out.println("Opção inválida. Por favor, digite 's' ou 'n'.");
+                    System.out.println("\nContinuar? (s/n)");
+                    continueChoice = scanner.next().charAt(0);
+                }
+            } else {
+                continueChoice = 'n';
+            }
+
+        } while (continueChoice == 's' || continueChoice == 'S');
+
+        Thread t = new Thread(new HotelDataWriter(hotelRoomRegistry));
         t.start();
-        }        
-            catch(Exception e)
-            {
-                System.out.println("Not a valid input");
-            }
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            System.err.println("Erro ao aguardar a thread de salvamento de dados: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+
+        scanner.close();
+        System.out.println("Aplicativo encerrado.");
+    }
+
+    private static void displayRoomTypeOptions() {
+        System.out.println("1. Quarto Duplo Luxo");
+        System.out.println("2. Quarto Duplo Deluxe");
+        System.out.println("3. Quarto Solteiro Luxo");
+        System.out.println("4. Quarto Solteiro Deluxe");
+    }
+
+    private static boolean isValidYesNo(char c) {
+        return c == 's' || c == 'S' || c == 'n' || c == 'N';
     }
 }
